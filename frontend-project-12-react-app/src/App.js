@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import NotFoundPage from './components/NotFoundPage';
 import LoginPage from './components/LoginPage';
 import NavbarElement from './components/Navbar';
+import { ROUTERS } from './utils/router';
 
 function App() {
   return (
@@ -9,8 +10,8 @@ function App() {
       <div className="d-flex flex-column h-100">
         <NavbarElement />
         <Routes>
-          <Route path="/" element={<LoginPage />} />
-          <Route path="login" element={<LoginPage />} />
+          <Route path={ROUTERS.mainPage} element={<LoginPage />} />
+          <Route path={ROUTERS.loginPage} element={<LoginPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </div>
