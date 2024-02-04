@@ -1,15 +1,19 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import NotFoundPage from './Components/NotFoundPage';
-import LoginPage from './Components/LoginPage';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import NotFoundPage from './components/NotFoundPage';
+import LoginPage from './components/LoginPage';
+import NavbarElement from './components/Navbar';
 
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<LoginPage />} />
-        <Route path="login" element={<LoginPage />} />
-        <Route path="*" element={<NotFoundPage />} />
-      </Routes>
+      <div className="d-flex flex-column h-100">
+        <NavbarElement />
+        <Routes>
+          <Route path="/" element={<LoginPage />} />
+          <Route path="login" element={<LoginPage />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </div>
     </BrowserRouter>
   );
 }
