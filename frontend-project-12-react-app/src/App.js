@@ -33,8 +33,9 @@ const AuthProvider = ({ children }) => {
 const ChatRoute = ({ children }) => {
   const auth = useAuth();
   const location = useLocation();
+  const { token } = JSON.parse(localStorage.getItem('userId'));
 
-  return auth.loggedIn ? (
+  return auth.loggedIn && token ? (
     children
   ) : (
     <Navigate to="/login" state={{ from: location }} />
