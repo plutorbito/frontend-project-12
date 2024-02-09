@@ -33,9 +33,8 @@ const AuthProvider = ({ children }) => {
 const ChatRoute = ({ children }) => {
   const auth = useAuth();
   const location = useLocation();
-  const { token } = JSON.parse(localStorage.getItem('userId'));
 
-  return auth.loggedIn && token ? (
+  return auth.loggedIn ? (
     children
   ) : (
     <Navigate to="/login" state={{ from: location }} />
@@ -49,10 +48,18 @@ function App() {
         <div className="d-flex flex-column h-100">
           <NavbarElement />
           <Routes>
-            <Route path={ROUTERS.loginPage} element={<LoginPage />} />
+            <Route path="/login" element={<LoginPage />} />
             <Route path="*" element={<NotFoundPage />} />
             <Route
               path={ROUTERS.chatPage}
+              element={
+                <ChatRoute>
+                  <ChatPage />
+                </ChatRoute>
+              }
+            />
+            <Route
+              path="/chat"
               element={
                 <ChatRoute>
                   <ChatPage />
