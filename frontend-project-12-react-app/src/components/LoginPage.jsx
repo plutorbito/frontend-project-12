@@ -24,6 +24,7 @@ const LoginPage = () => {
         logIn();
         const userId = {
           token: response.data.token,
+          username: response.data.username,
         };
         localStorage.setItem('userId', JSON.stringify(userId));
         navigate(location.state?.from || '/');
@@ -73,12 +74,10 @@ const LoginPage = () => {
                     value={formik.values.password}
                     isInvalid={error}
                   />
-                  <label htmlFor="username">{'Ваш пароль'}</label>
-                  {error && (
-                    <Form.Control.Feedback type="invalid">
-                      {error}
-                    </Form.Control.Feedback>
-                  )}
+                  <label htmlFor="password">{'Ваш пароль'}</label>
+                  <Form.Control.Feedback type="invalid" tooltip>
+                    {error}
+                  </Form.Control.Feedback>
                 </Form.Group>
                 <Button
                   type="submit"

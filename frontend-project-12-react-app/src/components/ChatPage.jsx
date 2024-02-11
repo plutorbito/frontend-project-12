@@ -1,20 +1,12 @@
 import axios from 'axios';
 import React, { useEffect } from 'react';
 import routes from '../routes.js';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setChannels, setActiveChannel } from '../slices/channelsSlice.js';
+import { setMessages } from '../slices/messagesSlice.js';
 import ChannelsBox from './ChannelsBox.jsx';
 import MessagesBox from './MessagesBox.jsx';
-
-const getAuthHeader = () => {
-  const userId = JSON.parse(localStorage.getItem('userId'));
-
-  if (userId && userId.token) {
-    return { Authorization: `Bearer ${userId.token}` };
-  }
-
-  return {};
-};
+import getAuthHeader from '../utils/getAuthHeader.js';
 
 const ChatPage = () => {
   const dispatch = useDispatch();
@@ -31,8 +23,10 @@ const ChatPage = () => {
 
         console.log(channelsResponse);
         console.log(messagesResponse);
+
         dispatch(setChannels(channelsResponse.data));
         dispatch(setActiveChannel(channelsResponse.data[0].id));
+        dispatch(setMessages(messagesResponse.data));
       } catch (error) {
         console.error('Error fetching private data:', error);
       }
@@ -40,9 +34,6 @@ const ChatPage = () => {
 
     fetchData();
   }, [dispatch]);
-
-  const channels = useSelector((state) => state.channelsReducer);
-  console.log(channels);
 
   return (
     <div className="container h-100 my-4 overflow-hidden rounded shadow">

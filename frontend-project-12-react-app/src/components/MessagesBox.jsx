@@ -15,8 +15,8 @@ const MessagesBox = () => {
 
   const { messages } = useSelector((state) => state.messagesReducer);
 
-  console.log(channels, activeChannelId);
-  console.log(messages);
+  console.log('channels', channels, activeChannelId);
+  console.log('messages', messages);
 
   return (
     <div className="col p-0 h-100">
@@ -27,10 +27,13 @@ const MessagesBox = () => {
           </p>
           <span className="text-muted">{messages.length} сообщений</span>
         </div>
-        <div
-          id="messages-box"
-          className="chat-messages overflow-auto px-5"
-        ></div>
+        <div id="messages-box" className="chat-messages overflow-auto px-5">
+          {messages.map((message) => (
+            <div key={message.id}>
+              <b>{message.user}</b>: {message.body}
+            </div>
+          ))}
+        </div>
         <div className="mt-auto px-5 py-3">
           <NewMessageForm />
         </div>
