@@ -17,7 +17,7 @@ const NewMessageForm = () => {
   const user = JSON.parse(localStorage.getItem('userId')).username;
 
   useEffect(() => {
-    const socket = io('http://localhost:3000');
+    const socket = io();
     socket.on('newMessage', (payload) => {
       dispatch(addNewMessage(payload));
       console.log('socket new message', payload);
