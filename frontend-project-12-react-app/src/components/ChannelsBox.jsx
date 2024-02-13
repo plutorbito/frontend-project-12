@@ -1,7 +1,13 @@
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { setActiveChannel } from '../slices/channelsSlice.js';
 
 const ChannelsBox = () => {
-  const { channels } = useSelector((state) => state.channelsReducer);
+  const { channels, activeChannelId } = useSelector(
+    (state) => state.channelsReducer
+  );
+  console.log('channels in channelbox', channels, activeChannelId);
+
+  const dispatch = useDispatch();
 
   return (
     <div className="col-4 col-md-2 border-end px-0 bg-light flex-column h-100 d-flex">
@@ -30,7 +36,12 @@ const ChannelsBox = () => {
             <button
               type="button"
               id={channel.id}
-              className="w-100 rounded-0 text-start btn btn-secondary"
+              className={
+                channel.id === activeChannelId
+                  ? 'w-100 rounded-0 text-start btn btn-secondary'
+                  : 'w-100 rounded-0 text-start btn'
+              }
+              onClick={() => dispatch(setActiveChannel(channel.id))}
             >
               <span className="me-1">#</span>
               {channel.name}
