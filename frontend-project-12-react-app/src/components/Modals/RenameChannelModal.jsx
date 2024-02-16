@@ -1,19 +1,26 @@
+import { Dropdown } from 'react-bootstrap';
 import { useState, useRef } from 'react';
 import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
-import { addNewChannel, setActiveChannel } from '../slices/channelsSlice.js';
+import { renameChannel } from '../../slices/channelsSlice.js';
 import { Button, Form, Modal } from 'react-bootstrap';
-import _ from 'lodash';
-import validate from '../utils/validate';
+import getActiveChannelName from '../../utils/getActiveChannelName.js';
+import validate from '../../utils/validate.js';
 
-const NewChannelModal = () => {
+const RenameChannelModal = () => {
   const [error, setError] = useState('');
   const [show, setShow] = useState(false);
 
   const dispatch = useDispatch();
   const inputRef = useRef(null);
 
-  const { channels } = useSelector((state) => state.channelsReducer);
+  const { channels, activeChannelId } = useSelector(
+    (state) => state.channelsReducer
+  );
+  console.log('channels in rename channel', channels, activeChannelId);
+
+  const currentChannelName = getActiveChannelName(channels, activeChannelId);
+  console.log('currentChannelName', currentChannelName);
 
   const handleClose = () => {
     setShow(false);
@@ -24,22 +31,18 @@ const NewChannelModal = () => {
 
   const formik = useFormik({
     initialValues: {
-      name: '',
+      name: currentChannelName,
     },
     onSubmit: async (values) => {
-      const id = _.uniqueId('c');
-      values.id = id;
-      values.removable = true;
-      console.log(values);
+      values.currentId = activeChannelId;
       try {
         const channelNamesArray = channels.map((channel) => channel.name);
-        console.log('channelNamesArray', channelNamesArray);
         await validate(values.name, channelNamesArray);
-        dispatch(addNewChannel(values));
-        dispatch(setActiveChannel(values.id));
+        dispatch(renameChannel(values));
         setError('');
         handleClose();
         formik.resetForm();
+        console.log('renamed channels', channels);
       } catch (err) {
         setError(err.message);
       }
@@ -49,27 +52,11 @@ const NewChannelModal = () => {
 
   return (
     <>
-      <Button
-        variant=""
-        className="p-0 text-primary btn-group-vertical"
-        onClick={handleShow}
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 16 16"
-          width="20"
-          height="20"
-          fill="currentColor"
-        >
-          <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
-          <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
-        </svg>
-        <span className="visually-hidden" />
-      </Button>
+      <Dropdown.Item onClick={handleShow}>Переименовать</Dropdown.Item>
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Добавить канал</Modal.Title>
+          <Modal.Title>Переименовать канал</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={formik.handleSubmit}>
@@ -108,4 +95,4 @@ const NewChannelModal = () => {
   );
 };
 
-export default NewChannelModal;
+export default RenameChannelModal;

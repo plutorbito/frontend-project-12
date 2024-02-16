@@ -1,8 +1,9 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { setActiveChannel } from '../slices/channelsSlice.js';
 import { Button, Dropdown, ButtonGroup } from 'react-bootstrap';
-import NewChannelModal from './NewChannelModal.jsx';
-import RenameChannelModal from './RenameChannelModal.jsx';
+import NewChannelModal from './Modals/NewChannelModal.jsx';
+import RenameChannelModal from './Modals/RenameChannelModal.jsx';
+import RemoveChannelModal from './Modals/RemoveChannelModal.jsx';
 
 const ChannelsBox = () => {
   const { channels, activeChannelId } = useSelector(
@@ -45,7 +46,7 @@ const ChannelsBox = () => {
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                   <RenameChannelModal />
-                  <Dropdown.Item>Удалить</Dropdown.Item>
+                  <RemoveChannelModal />
                 </Dropdown.Menu>
               </Dropdown>
             ) : (
