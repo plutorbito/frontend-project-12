@@ -1,12 +1,6 @@
 import { useSelector } from 'react-redux';
 import NewMessageForm from './NewMessageForm';
-
-const getActiveChannelName = (channels, activeChannelId) => {
-  const activeChannel = channels.find(
-    (channel) => channel.id === activeChannelId
-  );
-  return activeChannel ? activeChannel.name : null;
-};
+import getActiveChannelName from '../utils/getActiveChannelName';
 
 const MessagesBox = () => {
   const { channels, activeChannelId } = useSelector(

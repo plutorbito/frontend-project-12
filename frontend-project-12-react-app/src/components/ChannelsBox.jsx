@@ -1,6 +1,8 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { setActiveChannel } from '../slices/channelsSlice.js';
+import { Button, Dropdown, ButtonGroup } from 'react-bootstrap';
 import NewChannelModal from './NewChannelModal.jsx';
+import RenameChannelModal from './RenameChannelModal.jsx';
 
 const ChannelsBox = () => {
   const { channels, activeChannelId } = useSelector(
@@ -22,19 +24,42 @@ const ChannelsBox = () => {
       >
         {channels.map((channel) => (
           <li key={channel.id} className="nav-item w-100">
-            <button
-              type="button"
-              id={channel.id}
-              className={
-                channel.id === activeChannelId
-                  ? 'w-100 rounded-0 text-start btn btn-secondary'
-                  : 'w-100 rounded-0 text-start btn'
-              }
-              onClick={() => dispatch(setActiveChannel(channel.id))}
-            >
-              <span className="me-1">#</span>
-              {channel.name}
-            </button>
+            {channel.removable ? (
+              <Dropdown as={ButtonGroup} className="d-flex">
+                <Button
+                  type="button"
+                  key={channel.id}
+                  className="w-100 rounded-0 text-start text-truncate"
+                  onClick={() => dispatch(setActiveChannel(channel.id))}
+                  variant={channel.id === activeChannelId ? 'secondary' : null}
+                >
+                  <span className="me-1">#</span>
+                  {channel.name}
+                </Button>
+                <Dropdown.Toggle
+                  split
+                  className="flex-grow-0"
+                  variant={channel.id === activeChannelId ? 'secondary' : null}
+                >
+                  <span className="visually-hidden">?</span>
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <RenameChannelModal />
+                  <Dropdown.Item>Удалить</Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            ) : (
+              <Button
+                type="button"
+                id={channel.id}
+                className={'w-100 rounded-0 text-start text-truncate'}
+                onClick={() => dispatch(setActiveChannel(channel.id))}
+                variant={channel.id === activeChannelId ? 'secondary' : null}
+              >
+                <span className="me-1">#</span>
+                {channel.name}
+              </Button>
+            )}
           </li>
         ))}
       </ul>
