@@ -1,39 +1,26 @@
-import axios from 'axios';
-import React, { useEffect } from 'react';
-import routes from '../routes.js';
 import { useDispatch } from 'react-redux';
 import { setChannels, setActiveChannel } from '../slices/channelsSlice.js';
 import { setMessages } from '../slices/messagesSlice.js';
 import ChannelsBox from './ChannelsBox.jsx';
 import MessagesBox from './MessagesBox.jsx';
-import getAuthHeader from '../utils/getAuthHeader.js';
+import { useGetChannelsQuery, useGetMessagesQuery } from '../api.js';
 
 const ChatPage = () => {
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const channelsResponse = await axios.get(routes.channelsPath(), {
-          headers: getAuthHeader(),
-        });
-        const messagesResponse = await axios.get(routes.messagesPath(), {
-          headers: getAuthHeader(),
-        });
+  const channelsResponse = useGetChannelsQuery();
 
-        console.log(channelsResponse);
-        console.log(messagesResponse);
+  if (channelsResponse.isSuccess) {
+    console.log(channelsResponse.data);
+    dispatch(setChannels(channelsResponse.data));
+    dispatch(setActiveChannel(channelsResponse.data[0].id));
+  }
 
-        dispatch(setChannels(channelsResponse.data));
-        dispatch(setActiveChannel(channelsResponse.data[0].id));
-        dispatch(setMessages(messagesResponse.data));
-      } catch (error) {
-        console.error('Error fetching private data:', error);
-      }
-    };
-
-    fetchData();
-  }, [dispatch]);
+  const messagesResponse = useGetMessagesQuery();
+  if (messagesResponse.isSuccess) {
+    console.log(messagesResponse.data);
+    dispatch(setMessages(messagesResponse.data));
+  }
 
   return (
     <div className="container h-100 my-4 overflow-hidden rounded shadow">

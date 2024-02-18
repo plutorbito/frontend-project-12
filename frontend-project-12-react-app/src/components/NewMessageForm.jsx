@@ -1,12 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useFormik } from 'formik';
 import { Button, Form, InputGroup } from 'react-bootstrap';
-import axios from 'axios';
-import routes from '../routes';
-import getAuthHeader from '../utils/getAuthHeader';
 import { useDispatch, useSelector } from 'react-redux';
 import { addNewMessage } from '../slices/messagesSlice.js';
 import { socket } from '../socket.js';
+import { useSendMessageMutation } from '../api.js';
 
 const NewMessageForm = () => {
   const [error, setError] = useState('');
@@ -26,19 +24,19 @@ const NewMessageForm = () => {
     };
   }, [dispatch]);
 
+  const [sendMessage, { isLoading }] = useSendMessageMutation();
+
   const formik = useFormik({
     initialValues: {
       body: '',
       channelId: '',
       user: user,
     },
+
     onSubmit: async (values) => {
       values.channelId = activeChannelId;
       try {
-        const response = await axios.post(routes.messagesPath(), values, {
-          headers: getAuthHeader(),
-        });
-
+        const response = await sendMessage(values);
         console.log('submitted message response', response);
         formik.resetForm();
       } catch (err) {
@@ -66,7 +64,11 @@ const NewMessageForm = () => {
           ref={inputRef}
         />
 
-        <Button type="submit" disabled="" className="btn btn-group-vertical">
+        <Button
+          type="submit"
+          disabled={isLoading}
+          className="btn btn-group-vertical"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 16 16"

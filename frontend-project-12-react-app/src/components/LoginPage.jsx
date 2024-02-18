@@ -1,17 +1,18 @@
-import axios from 'axios';
 import { useFormik } from 'formik';
 import React, { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import loginImage from '../assets/login.jpg';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/index.jsx';
-import routes from '../routes';
+import { useSendLoginDataMutation } from '../api.js';
 
 const LoginPage = () => {
   const [error, setError] = useState('');
   const { logIn } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
+
+  const [sendLoginData] = useSendLoginDataMutation();
 
   const formik = useFormik({
     initialValues: {
@@ -20,7 +21,7 @@ const LoginPage = () => {
     },
     onSubmit: async (values) => {
       try {
-        const response = await axios.post(routes.loginPath(), values);
+        const response = await sendLoginData(values);
         logIn();
         const userId = {
           token: response.data.token,

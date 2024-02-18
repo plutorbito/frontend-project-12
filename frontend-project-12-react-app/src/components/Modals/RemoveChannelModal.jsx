@@ -1,24 +1,19 @@
 import { Dropdown, Button, Modal } from 'react-bootstrap';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import getAuthHeader from '../../utils/getAuthHeader.js';
-import routes from '../../routes.js';
-import axios from 'axios';
+import { useRemoveChannelsMutation } from '../../api.js';
 
 const RemoveChannelModal = () => {
   const [show, setShow] = useState(false);
 
   const { activeChannelId } = useSelector((state) => state.channelsReducer);
 
+  const [removeChannels] = useRemoveChannelsMutation();
+
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const handleDeleteChannel = async () => {
-    const response = await axios.delete(
-      routes.channelsPathId(activeChannelId),
-      {
-        headers: getAuthHeader(),
-      }
-    );
+    const response = await removeChannels(activeChannelId);
     console.log('submitted channel remove response', response);
     handleClose();
   };

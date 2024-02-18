@@ -3,9 +3,7 @@ import { useFormik } from 'formik';
 import { useSelector } from 'react-redux';
 import { Button, Form, Modal } from 'react-bootstrap';
 import validate from '../../utils/validate.js';
-import getAuthHeader from '../../utils/getAuthHeader.js';
-import routes from '../../routes.js';
-import axios from 'axios';
+import { useAddChannelsMutation } from '../../api.js';
 
 const NewChannelModal = () => {
   const [error, setError] = useState('');
@@ -22,6 +20,8 @@ const NewChannelModal = () => {
   };
   const handleShow = () => setShow(true);
 
+  const [addChannelMutation] = useAddChannelsMutation();
+
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -32,9 +32,7 @@ const NewChannelModal = () => {
         console.log('channelNamesArray', channelNamesArray);
         await validate(values.name, channelNamesArray);
 
-        const response = await axios.post(routes.channelsPath(), values, {
-          headers: getAuthHeader(),
-        });
+        const response = await addChannelMutation(values);
 
         console.log('submitted channel response', response);
 

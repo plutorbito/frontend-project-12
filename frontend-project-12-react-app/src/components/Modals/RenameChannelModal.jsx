@@ -5,9 +5,7 @@ import { useSelector } from 'react-redux';
 import { Button, Form, Modal } from 'react-bootstrap';
 import getActiveChannelName from '../../utils/getActiveChannelName.js';
 import validate from '../../utils/validate.js';
-import getAuthHeader from '../../utils/getAuthHeader.js';
-import routes from '../../routes.js';
-import axios from 'axios';
+import { useRenameChannelsMutation } from '../../api.js';
 
 const RenameChannelModal = () => {
   const [error, setError] = useState('');
@@ -22,6 +20,8 @@ const RenameChannelModal = () => {
 
   const currentChannelName = getActiveChannelName(channels, activeChannelId);
   console.log('currentChannelName', currentChannelName);
+
+  const [renameChannels] = useRenameChannelsMutation();
 
   const handleClose = () => {
     setShow(false);
@@ -39,15 +39,14 @@ const RenameChannelModal = () => {
       try {
         const channelNamesArray = channels.map((channel) => channel.name);
         await validate(values.name, channelNamesArray);
+        console.log(values);
 
-        const response = await axios.patch(
-          routes.channelsPathId(activeChannelId),
-          values,
-          {
-            headers: getAuthHeader(),
-          }
-        );
+        const response = await renameChannels({
+          id: activeChannelId,
+          newName: values.name,
+        });
         console.log('submitted channel rename response', response);
+
         setError('');
         handleClose();
         formik.resetForm();
