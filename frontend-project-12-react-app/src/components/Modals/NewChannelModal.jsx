@@ -1,16 +1,16 @@
 import { useState, useRef } from 'react';
 import { useFormik } from 'formik';
-import { useDispatch, useSelector } from 'react-redux';
-import { addNewChannel, setActiveChannel } from '../../slices/channelsSlice.js';
+import { useSelector } from 'react-redux';
 import { Button, Form, Modal } from 'react-bootstrap';
-import _ from 'lodash';
 import validate from '../../utils/validate.js';
+import getAuthHeader from '../../utils/getAuthHeader.js';
+import routes from '../../routes.js';
+import axios from 'axios';
 
 const NewChannelModal = () => {
   const [error, setError] = useState('');
   const [show, setShow] = useState(false);
 
-  const dispatch = useDispatch();
   const inputRef = useRef(null);
 
   const { channels } = useSelector((state) => state.channelsReducer);
@@ -27,16 +27,17 @@ const NewChannelModal = () => {
       name: '',
     },
     onSubmit: async (values) => {
-      const id = _.uniqueId('c');
-      values.id = id;
-      values.removable = true;
-      console.log(values);
       try {
         const channelNamesArray = channels.map((channel) => channel.name);
         console.log('channelNamesArray', channelNamesArray);
         await validate(values.name, channelNamesArray);
-        dispatch(addNewChannel(values));
-        dispatch(setActiveChannel(values.id));
+
+        const response = await axios.post(routes.channelsPath(), values, {
+          headers: getAuthHeader(),
+        });
+
+        console.log('submitted channel response', response);
+
         setError('');
         handleClose();
         formik.resetForm();

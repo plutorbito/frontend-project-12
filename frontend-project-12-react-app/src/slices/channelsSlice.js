@@ -20,13 +20,18 @@ export const channelsSlice = createSlice({
       state.channels.push(action.payload);
     },
     renameChannel: (state, action) => {
-      const { name, currentId } = action.payload;
-      const channelToRename = state.channels.find(({ id }) => id === currentId);
-      channelToRename.name = name;
+      const { channels } = state;
+      const { name, id } = action.payload;
+      console.log(action.payload);
+      const newChannels = channels.map((channel) =>
+        channel.id === id ? { ...channel, name: name } : channel
+      );
+      console.log('newChannels', newChannels);
+      state.channels = newChannels;
     },
     removeChannel: (state, action) => {
-      const currentChannelId = action.payload;
-      _.remove(state.channels, ({ id }) => id === currentChannelId);
+      const id = action.payload;
+      _.remove(state.channels, (channel) => channel.id === id);
     },
   },
 });

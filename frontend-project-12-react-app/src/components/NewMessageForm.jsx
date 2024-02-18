@@ -4,9 +4,9 @@ import { Button, Form, InputGroup } from 'react-bootstrap';
 import axios from 'axios';
 import routes from '../routes';
 import getAuthHeader from '../utils/getAuthHeader';
-import { io } from 'socket.io-client';
 import { useDispatch, useSelector } from 'react-redux';
 import { addNewMessage } from '../slices/messagesSlice.js';
+import { socket } from '../socket.js';
 
 const NewMessageForm = () => {
   const [error, setError] = useState('');
@@ -17,13 +17,12 @@ const NewMessageForm = () => {
   const user = JSON.parse(localStorage.getItem('userId')).username;
 
   useEffect(() => {
-    const socket = io();
     socket.on('newMessage', (payload) => {
       dispatch(addNewMessage(payload));
       console.log('socket new message', payload);
     });
     return () => {
-      socket.disconnect();
+      socket.off('newMessage');
     };
   }, [dispatch]);
 

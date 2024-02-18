@@ -1,17 +1,18 @@
 import { Dropdown } from 'react-bootstrap';
 import { useState, useRef } from 'react';
 import { useFormik } from 'formik';
-import { useDispatch, useSelector } from 'react-redux';
-import { renameChannel } from '../../slices/channelsSlice.js';
+import { useSelector } from 'react-redux';
 import { Button, Form, Modal } from 'react-bootstrap';
 import getActiveChannelName from '../../utils/getActiveChannelName.js';
 import validate from '../../utils/validate.js';
+import getAuthHeader from '../../utils/getAuthHeader.js';
+import routes from '../../routes.js';
+import axios from 'axios';
 
 const RenameChannelModal = () => {
   const [error, setError] = useState('');
   const [show, setShow] = useState(false);
 
-  const dispatch = useDispatch();
   const inputRef = useRef(null);
 
   const { channels, activeChannelId } = useSelector(
@@ -38,11 +39,18 @@ const RenameChannelModal = () => {
       try {
         const channelNamesArray = channels.map((channel) => channel.name);
         await validate(values.name, channelNamesArray);
-        dispatch(renameChannel(values));
+
+        const response = await axios.patch(
+          routes.channelsPathId(activeChannelId),
+          values,
+          {
+            headers: getAuthHeader(),
+          }
+        );
+        console.log('submitted channel rename response', response);
         setError('');
         handleClose();
         formik.resetForm();
-        console.log('renamed channels', channels);
       } catch (err) {
         setError(err.message);
       }
