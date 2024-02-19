@@ -2,7 +2,7 @@ import { useState, useRef } from 'react';
 import { useFormik } from 'formik';
 import { useSelector } from 'react-redux';
 import { Button, Form, Modal } from 'react-bootstrap';
-import validate from '../../utils/validate.js';
+import { validateChannel } from '../../utils/validate.js';
 import { useAddChannelsMutation } from '../../api.js';
 
 const NewChannelModal = () => {
@@ -30,7 +30,7 @@ const NewChannelModal = () => {
       try {
         const channelNamesArray = channels.map((channel) => channel.name);
         console.log('channelNamesArray', channelNamesArray);
-        await validate(values.name, channelNamesArray);
+        await validateChannel(values.name, channelNamesArray);
 
         const response = await addChannelMutation(values);
 

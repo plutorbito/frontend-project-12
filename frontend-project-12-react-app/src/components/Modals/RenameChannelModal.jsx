@@ -4,7 +4,7 @@ import { useFormik } from 'formik';
 import { useSelector } from 'react-redux';
 import { Button, Form, Modal } from 'react-bootstrap';
 import getActiveChannelName from '../../utils/getActiveChannelName.js';
-import validate from '../../utils/validate.js';
+import { validateChannel } from '../../utils/validate.js';
 import { useRenameChannelsMutation } from '../../api.js';
 
 const RenameChannelModal = () => {
@@ -38,7 +38,7 @@ const RenameChannelModal = () => {
       values.currentId = activeChannelId;
       try {
         const channelNamesArray = channels.map((channel) => channel.name);
-        await validate(values.name, channelNamesArray);
+        await validateChannel(values.name, channelNamesArray);
         console.log(values);
 
         const response = await renameChannels({

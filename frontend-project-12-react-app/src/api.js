@@ -18,6 +18,14 @@ export const backendApi = createApi({
       }),
     }),
 
+    sendNewUserData: builder.mutation({
+      query: (newUserData) => ({
+        url: 'signup',
+        method: 'POST',
+        body: newUserData,
+      }),
+    }),
+
     getMessages: builder.query({
       query: () => ({
         url: 'messages',
@@ -74,4 +82,5 @@ export const {
   useAddChannelsMutation,
   useRemoveChannelsMutation,
   useRenameChannelsMutation,
+  useSendNewUserDataMutation,
 } = backendApi;

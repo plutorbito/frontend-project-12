@@ -1,6 +1,6 @@
 import * as yup from 'yup';
 
-const validate = (field, array) => {
+const validateChannel = (field, array) => {
   const schema = yup
     .string()
     .required('Обязательное поле')
@@ -11,4 +11,23 @@ const validate = (field, array) => {
   return schema.validate(field);
 };
 
-export default validate;
+const signupFormSchema = yup.object().shape({
+  username: yup
+    .string()
+    .required('Обязательное поле')
+    .trim()
+    .min(3, 'От 3 до 20 символов')
+    .max(20, 'От 3 до 20 символов'),
+  password: yup
+    .string()
+    .required('Обязательное поле')
+    .trim()
+    .min(6, 'Не менее 6 символов'),
+  confirmPassword: yup
+    .string()
+    .trim()
+    .oneOf([yup.ref('password')], 'Пароли должны совпадать')
+    .required('Обязательное поле'),
+});
+
+export { validateChannel, signupFormSchema };

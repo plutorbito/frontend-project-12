@@ -11,6 +11,17 @@ const NavbarElement = () => {
         <Navbar.Brand as={Link} to="/">
           Chat
         </Navbar.Brand>
+        {loggedIn && (
+          <Navbar>
+            <Container>
+              <Navbar.Brand>
+                <b>
+                  {JSON.parse(localStorage.getItem('userId')).username ?? null}
+                </b>
+              </Navbar.Brand>
+            </Container>
+          </Navbar>
+        )}
         {loggedIn && <Button onClick={logOut}>Выйти</Button>}
       </Container>
     </Navbar>

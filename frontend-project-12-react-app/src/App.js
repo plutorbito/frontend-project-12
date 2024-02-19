@@ -13,6 +13,7 @@ import NavbarElement from './components/Navbar';
 import { ROUTERS } from './utils/router';
 import AuthContext from './contexts';
 import useAuth from './hooks';
+import SignupPage from './components/SignupPage';
 
 const AuthProvider = ({ children }) => {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -48,8 +49,8 @@ function App() {
         <div className="d-flex flex-column h-100">
           <NavbarElement />
           <Routes>
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="*" element={<NotFoundPage />} />
+            <Route path={ROUTERS.loginPage} element={<LoginPage />} />
+            <Route path={ROUTERS.other} element={<NotFoundPage />} />
             <Route
               path={ROUTERS.chatPage}
               element={
@@ -58,14 +59,7 @@ function App() {
                 </ChatRoute>
               }
             />
-            <Route
-              path="/chat"
-              element={
-                <ChatRoute>
-                  <ChatPage />
-                </ChatRoute>
-              }
-            />
+            <Route path={ROUTERS.signupPage} element={<SignupPage />} />
           </Routes>
         </div>
       </BrowserRouter>

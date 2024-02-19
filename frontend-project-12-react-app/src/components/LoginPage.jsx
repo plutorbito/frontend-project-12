@@ -22,12 +22,12 @@ const LoginPage = () => {
     onSubmit: async (values) => {
       try {
         const response = await sendLoginData(values);
-        logIn();
         const userId = {
           token: response.data.token,
           username: response.data.username,
         };
         localStorage.setItem('userId', JSON.stringify(userId));
+        logIn();
         navigate(location.state?.from || '/');
       } catch (err) {
         setError('Неверные имя пользователя или пароль');
