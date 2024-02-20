@@ -1,5 +1,5 @@
 import { useFormik } from 'formik';
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import signupImage from '../assets/signup.png';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -13,6 +13,11 @@ const SignupPage = () => {
   const { logIn } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
+
+  const inputRef = useRef();
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
 
   const [sendNewUserData] = useSendNewUserDataMutation();
 
@@ -31,6 +36,8 @@ const SignupPage = () => {
 
         if (response.error?.status === 409) {
           setError('Пользователь уже существует');
+          inputRef.current.select();
+          return;
         } else {
           logIn();
           setError('');
@@ -75,6 +82,7 @@ const SignupPage = () => {
                     autoComplete="username"
                     onChange={formik.handleChange}
                     value={formik.values.username}
+                    ref={inputRef}
                     isInvalid={formik.errors.username || error}
                   />
                   <label htmlFor="username">{'Имя пользователя'}</label>
