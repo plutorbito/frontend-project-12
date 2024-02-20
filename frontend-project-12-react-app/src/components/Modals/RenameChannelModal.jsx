@@ -1,5 +1,5 @@
 import { Dropdown } from 'react-bootstrap';
-import { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useFormik } from 'formik';
 import { useSelector } from 'react-redux';
 import { Button, Form, Modal } from 'react-bootstrap';
@@ -29,6 +29,12 @@ const RenameChannelModal = () => {
     formik.resetForm();
   };
   const handleShow = () => setShow(true);
+
+  useEffect(() => {
+    if (show) {
+      inputRef.current.focus();
+    }
+  }, [show]);
 
   const formik = useFormik({
     initialValues: {
@@ -71,7 +77,6 @@ const RenameChannelModal = () => {
               <Form.Control
                 type="text"
                 name="name"
-                autoFocus
                 value={formik.values.name}
                 onChange={formik.handleChange}
                 isInvalid={error}
