@@ -1,11 +1,12 @@
 import { Dropdown } from 'react-bootstrap';
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { useFormik } from 'formik';
 import { useSelector } from 'react-redux';
 import { Button, Form, Modal } from 'react-bootstrap';
 import getActiveChannelName from '../../utils/getActiveChannelName.js';
 import { validateChannel } from '../../utils/validate.js';
 import { useRenameChannelsMutation } from '../../api.js';
+import { useTranslation } from 'react-i18next';
 
 const RenameChannelModal = () => {
   const [error, setError] = useState('');
@@ -23,18 +24,14 @@ const RenameChannelModal = () => {
 
   const [renameChannels] = useRenameChannelsMutation();
 
+  const { t } = useTranslation();
+
   const handleClose = () => {
     setShow(false);
     setError('');
     formik.resetForm();
   };
   const handleShow = () => setShow(true);
-
-  useEffect(() => {
-    if (show) {
-      inputRef.current.focus();
-    }
-  }, [show]);
 
   const formik = useFormik({
     initialValues: {
@@ -65,11 +62,13 @@ const RenameChannelModal = () => {
 
   return (
     <>
-      <Dropdown.Item onClick={handleShow}>Переименовать</Dropdown.Item>
+      <Dropdown.Item onClick={handleShow}>
+        {t('channelModals.renameDropdown')}
+      </Dropdown.Item>
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Переименовать канал</Modal.Title>
+          <Modal.Title>{t('channelModals.renameChannelHeader')}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={formik.handleSubmit}>
@@ -94,10 +93,10 @@ const RenameChannelModal = () => {
                 className="me-2"
                 onClick={handleClose}
               >
-                Отменить
+                {t('channelModals.cancelButton')}
               </Button>
               <Button variant="primary" type="submit">
-                Отправить
+                {t('channelModals.submitButton')}
               </Button>
             </div>
           </Form>

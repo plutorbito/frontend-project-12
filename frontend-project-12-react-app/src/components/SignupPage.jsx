@@ -4,7 +4,7 @@ import { Button, Form } from 'react-bootstrap';
 import signupImage from '../assets/signup.png';
 import { useLocation, useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/index.jsx';
-
+import { useTranslation } from 'react-i18next';
 import { signupFormSchema } from '../utils/validate.js';
 import { useSendNewUserDataMutation } from '../api.js';
 
@@ -21,6 +21,8 @@ const SignupPage = () => {
 
   const [sendNewUserData] = useSendNewUserDataMutation();
 
+  const { t } = useTranslation();
+
   const formik = useFormik({
     initialValues: {
       username: '',
@@ -35,7 +37,7 @@ const SignupPage = () => {
         console.log('signup response', response);
 
         if (response.error?.status === 409) {
-          setError('Пользователь уже существует');
+          setError(t('signup.validation.userExists'));
           inputRef.current.select();
           return;
         } else {
@@ -66,41 +68,41 @@ const SignupPage = () => {
                 <img
                   src={signupImage}
                   className="rounded-circle img-fluid"
-                  alt={'Зарегистрироваться'}
+                  alt={t('signup.header')}
                 />
               </div>
               <Form
                 className="col-12 col-md-6 mt-3 mt-mb-0"
                 onSubmit={formik.handleSubmit}
               >
-                <h3 className="text-center mb-4">Регистрация</h3>
+                <h3 className="text-center mb-4">{t('signup.header')}</h3>
                 <Form.Group className="mb-3 form-floating" controlId="username">
                   <Form.Control
                     type="text"
                     name="username"
-                    placeholder={'Имя пользователя'}
+                    placeholder={t('signup.username')}
                     autoComplete="username"
                     onChange={formik.handleChange}
                     value={formik.values.username}
                     ref={inputRef}
                     isInvalid={formik.errors.username || error}
                   />
-                  <label htmlFor="username">{'Имя пользователя'}</label>
+                  <label htmlFor="username">{t('signup.username')}</label>
                   <Form.Control.Feedback type="invalid" tooltip>
-                    {(formik.errors.username, error)}
+                    {formik.errors.username || error}
                   </Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group className="mb-3 form-floating" controlId="password">
                   <Form.Control
                     type="password"
                     name="password"
-                    placeholder={'Пароль'}
+                    placeholder={t('signup.password')}
                     autoComplete="new-password"
                     onChange={formik.handleChange}
                     value={formik.values.password}
                     isInvalid={formik.errors.password}
                   />
-                  <label htmlFor="password">{'Пароль'}</label>
+                  <label htmlFor="password">{t('signup.password')}</label>
                   <Form.Control.Feedback type="invalid" tooltip>
                     {formik.errors.password}
                   </Form.Control.Feedback>
@@ -112,14 +114,14 @@ const SignupPage = () => {
                   <Form.Control
                     type="password"
                     name="confirmPassword"
-                    placeholder={'Подтвердите пароль'}
+                    placeholder={t('signup.confirmPassword')}
                     autoComplete="new-password"
                     onChange={formik.handleChange}
                     value={formik.values.confirmPassword}
                     isInvalid={formik.errors.confirmPassword}
                   />
                   <label htmlFor="confirmPassword">
-                    {'Подтвердите пароль'}
+                    {t('signup.confirmPassword')}
                   </label>
                   <Form.Control.Feedback type="invalid" tooltip>
                     {formik.errors.confirmPassword}
@@ -130,7 +132,7 @@ const SignupPage = () => {
                   variant="outline-primary"
                   className="w-100"
                 >
-                  Зарегистрироваться
+                  {t('signup.submitButton')}
                 </Button>
                 <Form.Control.Feedback type="invalid" tooltip>
                   {error}

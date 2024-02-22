@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { Button, Form, Modal } from 'react-bootstrap';
 import { validateChannel } from '../../utils/validate.js';
 import { useAddChannelsMutation } from '../../api.js';
+import { useTranslation } from 'react-i18next';
 
 const NewChannelModal = () => {
   const [error, setError] = useState('');
@@ -20,7 +21,9 @@ const NewChannelModal = () => {
   };
   const handleShow = () => setShow(true);
 
-  const [addChannelMutation] = useAddChannelsMutation();
+  const [addChannels] = useAddChannelsMutation();
+
+  const { t } = useTranslation();
 
   const formik = useFormik({
     initialValues: {
@@ -32,7 +35,7 @@ const NewChannelModal = () => {
         console.log('channelNamesArray', channelNamesArray);
         await validateChannel(values.name, channelNamesArray);
 
-        const response = await addChannelMutation(values);
+        const response = await addChannels(values);
 
         console.log('submitted channel response', response);
 
@@ -68,7 +71,7 @@ const NewChannelModal = () => {
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Добавить канал</Modal.Title>
+          <Modal.Title>{t('channelModals.addChannelHeader')}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={formik.handleSubmit}>
@@ -94,10 +97,10 @@ const NewChannelModal = () => {
                 className="me-2"
                 onClick={handleClose}
               >
-                Отменить
+                {t('channelModals.cancelButton')}
               </Button>
               <Button variant="primary" type="submit">
-                Отправить
+                {t('channelModals.submitButton')}
               </Button>
             </div>
           </Form>

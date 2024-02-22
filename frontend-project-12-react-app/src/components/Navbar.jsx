@@ -1,15 +1,17 @@
 import { Navbar, Container, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import useAuth from '../hooks';
+import { useTranslation } from 'react-i18next';
 
 const NavbarElement = () => {
+  const { t } = useTranslation();
   console.log(useAuth());
   const { loggedIn, logOut } = useAuth();
   return (
     <Navbar bg="white" expand="lg" className="shadow-sm">
       <Container>
         <Navbar.Brand as={Link} to="/">
-          Chat
+          {t('navbar.brand')}
         </Navbar.Brand>
         {loggedIn && (
           <Navbar>
@@ -22,7 +24,7 @@ const NavbarElement = () => {
             </Container>
           </Navbar>
         )}
-        {loggedIn && <Button onClick={logOut}>Выйти</Button>}
+        {loggedIn && <Button onClick={logOut}>{t('navbar.logout')}</Button>}
       </Container>
     </Navbar>
   );

@@ -5,9 +5,12 @@ import ChannelsBox from './ChannelsBox.jsx';
 import MessagesBox from './MessagesBox.jsx';
 import { useGetChannelsQuery, useGetMessagesQuery } from '../api.js';
 import { Spinner } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 
 const ChatPage = () => {
   const dispatch = useDispatch();
+
+  const { t } = useTranslation();
 
   const channelsResponse = useGetChannelsQuery();
 
@@ -29,7 +32,9 @@ const ChatPage = () => {
         {channelsResponse.isLoading || messagesResponse.isLoading ? (
           <div className="d-flex">
             <Spinner animation="grow" />
-            <span style={{ marginLeft: '0.5rem' }}>Loading...</span>
+            <span style={{ marginLeft: '0.5rem' }}>
+              {t('chatPage.loading')}
+            </span>
           </div>
         ) : (
           <>
