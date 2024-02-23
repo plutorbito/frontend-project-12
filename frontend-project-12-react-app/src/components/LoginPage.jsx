@@ -6,6 +6,8 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/index.jsx';
 import { useSendLoginDataMutation } from '../api.js';
 import { useTranslation } from 'react-i18next';
+import handleResponseError from '../utils/handleResponseErrors.js';
+import handleSignupAndLoginResponse from '../utils/handleSignupAndLoginResponse.js';
 
 const LoginPage = () => {
   const [error, setError] = useState('');
@@ -25,15 +27,22 @@ const LoginPage = () => {
     onSubmit: async (values) => {
       try {
         const response = await sendLoginData(values);
-        const userId = {
-          token: response.data.token,
-          username: response.data.username,
-        };
-        localStorage.setItem('userId', JSON.stringify(userId));
-        logIn();
-        navigate(location.state?.from || '/');
+        console.log('login response', response);
+
+        if (response.error) {
+          throw response.error;
+        } else {
+          handleSignupAndLoginResponse(
+            response,
+            logIn,
+            setError,
+            navigate,
+            location
+          );
+        }
       } catch (err) {
-        setError(t('login.validation.authFailed'));
+        console.log(err);
+        handleResponseError(err, setError, t);
       }
     },
   });

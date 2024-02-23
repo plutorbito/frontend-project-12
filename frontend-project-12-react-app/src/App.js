@@ -14,6 +14,8 @@ import { ROUTERS } from './utils/router';
 import AuthContext from './contexts';
 import useAuth from './hooks';
 import SignupPage from './components/SignupPage';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const AuthProvider = ({ children }) => {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -62,6 +64,18 @@ function App() {
             <Route path={ROUTERS.signupPage} element={<SignupPage />} />
           </Routes>
         </div>
+        <ToastContainer
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
       </BrowserRouter>
     </AuthProvider>
   );

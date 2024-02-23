@@ -40,6 +40,9 @@ const resources = {
         renameDropdown: 'Переименовать',
         deleteDropdown: 'Удалить',
         removeChannelBody: 'Уверены?',
+        channelAdded: 'Канал добавлен',
+        channelReamoved: 'Канал удален',
+        channelRenamed: 'Канал переименован',
         validation: {
           required: 'Обязательное поле',
           channelLength: 'От 3 до 20 символов',
@@ -51,6 +54,8 @@ const resources = {
       },
       chatPage: {
         loading: 'Загрузка...',
+        getChannelsError: 'Ошибка загрузки каналов',
+        getMessagesError: 'Ошибка загрузки сообщений',
       },
       newMessageForm: {
         formPlaceholder: 'Введите сообщение...',
@@ -60,6 +65,12 @@ const resources = {
         messageCount_one: 'сообщение',
         messageCount_few: 'сообщения',
         messageCount_many: 'сообщений',
+        messageSent: 'Сообщение отправлено',
+      },
+      errors: {
+        network: 'Ошибка соединения',
+        unknown: 'Неизвестная ошибка',
+        post: 'Ошибка отправки данных',
       },
     },
   },

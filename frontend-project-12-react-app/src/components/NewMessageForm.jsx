@@ -6,6 +6,8 @@ import { addNewMessage } from '../slices/messagesSlice.js';
 import { socket } from '../socket.js';
 import { useSendMessageMutation } from '../api.js';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
+import handleResponseError from '../utils/handleResponseErrors.js';
 
 const NewMessageForm = () => {
   const [error, setError] = useState('');
@@ -41,9 +43,17 @@ const NewMessageForm = () => {
       try {
         const response = await sendMessage(values);
         console.log('submitted message response', response);
-        formik.resetForm();
+
+        if (response.error) {
+          throw response.error;
+        } else {
+          setError('');
+          toast.success(t('newMessageForm.messageSent'));
+          formik.resetForm();
+        }
       } catch (err) {
-        setError(t('newMessageForm.sendMessageError'));
+        console.log(err);
+        handleResponseError(err, setError, t);
       }
       inputRef.current.focus();
     },

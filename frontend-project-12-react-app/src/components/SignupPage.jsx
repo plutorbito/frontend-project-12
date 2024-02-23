@@ -7,6 +7,8 @@ import useAuth from '../hooks/index.jsx';
 import { useTranslation } from 'react-i18next';
 import { signupFormSchema } from '../utils/validate.js';
 import { useSendNewUserDataMutation } from '../api.js';
+import handleResponseError from '../utils/handleResponseErrors.js';
+import handleSignupAndLoginResponse from '../utils/handleSignupAndLoginResponse.js';
 
 const SignupPage = () => {
   const [error, setError] = useState('');
@@ -36,24 +38,29 @@ const SignupPage = () => {
         const response = await sendNewUserData(values);
         console.log('signup response', response);
 
-        if (response.error?.status === 409) {
-          setError(t('signup.validation.userExists'));
-          inputRef.current.select();
-          return;
+        if (response.error) {
+          throw response.error;
         } else {
-          logIn();
-          setError('');
-          const userId = {
-            token: response.data.token,
-            username: response.data.username,
-          };
-          localStorage.setItem('userId', JSON.stringify(userId));
+          handleSignupAndLoginResponse(
+            response,
+            logIn,
+            setError,
+            navigate,
+            location
+          );
+          // logIn();
+          // setError('');
+          // const userId = {
+          //   token: response.data.token,
+          //   username: response.data.username,
+          // };
+          // localStorage.setItem('userId', JSON.stringify(userId));
 
-          navigate(location.state?.from || '/');
+          // navigate(location.state?.from || '/');
         }
       } catch (err) {
         console.log(err);
-        setError(err.message);
+        handleResponseError(err, setError, t);
       }
     },
   });

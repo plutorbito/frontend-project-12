@@ -7,6 +7,7 @@ import getActiveChannelName from '../../utils/getActiveChannelName.js';
 import { validateChannel } from '../../utils/validate.js';
 import { useRenameChannelsMutation } from '../../api.js';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 const RenameChannelModal = () => {
   const [error, setError] = useState('');
@@ -50,6 +51,7 @@ const RenameChannelModal = () => {
         });
         console.log('submitted channel rename response', response);
 
+        toast.success(t('channelModals.channelRenamed'));
         setError('');
         handleClose();
         formik.resetForm();

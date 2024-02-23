@@ -5,6 +5,7 @@ import { Button, Form, Modal } from 'react-bootstrap';
 import { validateChannel } from '../../utils/validate.js';
 import { useAddChannelsMutation } from '../../api.js';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 const NewChannelModal = () => {
   const [error, setError] = useState('');
@@ -38,6 +39,8 @@ const NewChannelModal = () => {
         const response = await addChannels(values);
 
         console.log('submitted channel response', response);
+
+        toast.success(t('channelModals.channelAdded'));
 
         setError('');
         handleClose();

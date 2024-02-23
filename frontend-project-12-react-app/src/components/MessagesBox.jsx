@@ -41,7 +41,7 @@ const MessagesBox = () => {
             </div>
           ))}
         </div>
-        <div className="mt-auto px-5 py-3">
+        <div className="mt-auto px-5 py-4">
           <NewMessageForm />
         </div>
       </div>

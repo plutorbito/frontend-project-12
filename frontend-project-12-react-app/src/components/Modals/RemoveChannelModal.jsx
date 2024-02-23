@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useRemoveChannelsMutation } from '../../api.js';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 const RemoveChannelModal = () => {
   const [show, setShow] = useState(false);
@@ -19,6 +20,7 @@ const RemoveChannelModal = () => {
     const response = await removeChannels(activeChannelId);
     console.log('submitted channel remove response', response);
     handleClose();
+    toast.success(t('channelModals.channelReamoved'));
   };
 
   return (
