@@ -8,6 +8,7 @@ import { useSendMessageMutation } from '../api.js';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import handleResponseError from '../utils/handleResponseErrors.js';
+import checkBadWords from '../utils/checkBadWords.js';
 
 const NewMessageForm = () => {
   const [error, setError] = useState('');
@@ -34,14 +35,16 @@ const NewMessageForm = () => {
   const formik = useFormik({
     initialValues: {
       body: '',
-      channelId: '',
-      user: user,
     },
 
-    onSubmit: async (values) => {
-      values.channelId = activeChannelId;
+    onSubmit: async ({ body }) => {
       try {
-        const response = await sendMessage(values);
+        const filteredMessage = {
+          body: checkBadWords(body),
+          channelId: activeChannelId,
+          user: user,
+        };
+        const response = await sendMessage(filteredMessage);
         console.log('submitted message response', response);
 
         if (response.error) {

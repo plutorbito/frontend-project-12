@@ -8,6 +8,7 @@ import { validateChannel } from '../../utils/validate.js';
 import { useRenameChannelsMutation } from '../../api.js';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import checkBadWords from '../../utils/checkBadWords.js';
 
 const RenameChannelModal = () => {
   const [error, setError] = useState('');
@@ -38,17 +39,17 @@ const RenameChannelModal = () => {
     initialValues: {
       name: currentChannelName,
     },
-    onSubmit: async (values) => {
-      values.currentId = activeChannelId;
+    onSubmit: async ({ name }) => {
       try {
         const channelNamesArray = channels.map((channel) => channel.name);
-        await validateChannel(values.name, channelNamesArray);
-        console.log(values);
-
-        const response = await renameChannels({
+        await validateChannel(name, channelNamesArray);
+        const filteredChannel = {
           id: activeChannelId,
-          newName: values.name,
-        });
+          newName: checkBadWords(name),
+        };
+        console.log(filteredChannel);
+
+        const response = await renameChannels(filteredChannel);
         console.log('submitted channel rename response', response);
 
         toast.success(t('channelModals.channelRenamed'));

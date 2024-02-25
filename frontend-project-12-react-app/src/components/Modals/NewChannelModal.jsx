@@ -6,6 +6,7 @@ import { validateChannel } from '../../utils/validate.js';
 import { useAddChannelsMutation } from '../../api.js';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import checkBadWords from '../../utils/checkBadWords.js';
 
 const NewChannelModal = () => {
   const [error, setError] = useState('');
@@ -30,13 +31,14 @@ const NewChannelModal = () => {
     initialValues: {
       name: '',
     },
-    onSubmit: async (values) => {
+    onSubmit: async ({ name }) => {
       try {
         const channelNamesArray = channels.map((channel) => channel.name);
         console.log('channelNamesArray', channelNamesArray);
-        await validateChannel(values.name, channelNamesArray);
+        await validateChannel(name, channelNamesArray);
+        const filteredChannel = { name: checkBadWords(name) };
 
-        const response = await addChannels(values);
+        const response = await addChannels(filteredChannel);
 
         console.log('submitted channel response', response);
 
