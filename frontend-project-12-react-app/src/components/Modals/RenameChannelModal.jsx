@@ -1,5 +1,4 @@
-import { Dropdown } from 'react-bootstrap';
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useFormik } from 'formik';
 import { useSelector } from 'react-redux';
 import { Button, Form, Modal } from 'react-bootstrap';
@@ -10,11 +9,14 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import checkBadWords from '../../utils/checkBadWords.js';
 
-const RenameChannelModal = () => {
+const RenameChannelModal = ({ closeModal }) => {
   const [error, setError] = useState('');
-  const [show, setShow] = useState(false);
 
   const inputRef = useRef(null);
+
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
 
   const { channels, activeChannelId } = useSelector(
     (state) => state.channelsReducer
@@ -29,11 +31,10 @@ const RenameChannelModal = () => {
   const { t } = useTranslation();
 
   const handleClose = () => {
-    setShow(false);
     setError('');
+    closeModal();
     formik.resetForm();
   };
-  const handleShow = () => setShow(true);
 
   const formik = useFormik({
     initialValues: {
@@ -65,11 +66,7 @@ const RenameChannelModal = () => {
 
   return (
     <>
-      <Dropdown.Item onClick={handleShow}>
-        {t('channelModals.renameDropdown')}
-      </Dropdown.Item>
-
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={true} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>{t('channelModals.renameChannelHeader')}</Modal.Title>
         </Modal.Header>
@@ -78,6 +75,7 @@ const RenameChannelModal = () => {
             <Form.Group className="mb-3" controlId="addChannel">
               <Form.Control
                 type="text"
+                autoFocus
                 name="name"
                 value={formik.values.name}
                 onChange={formik.handleChange}

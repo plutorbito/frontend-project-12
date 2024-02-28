@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { setChannels, setActiveChannel } from '../slices/channelsSlice.js';
 import { setMessages } from '../slices/messagesSlice.js';
 import ChannelsBox from './ChannelsBox.jsx';
@@ -8,11 +8,29 @@ import { useGetChannelsQuery, useGetMessagesQuery } from '../api.js';
 import { Spinner } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import getModal from './Modals/index.js';
+import { setModalInfo } from '../slices/modalsSlice.js';
+
+const renderModal = ({ modalInfo, closeModal }) => {
+  if (!modalInfo.type) {
+    return null;
+  }
+
+  const Component = getModal(modalInfo.type);
+  return <Component closeModal={closeModal} />;
+};
 
 const ChatPage = () => {
   const dispatch = useDispatch();
 
   const { t } = useTranslation();
+
+  const modalInfo = useSelector((state) => state.ModalsReducer);
+  console.log('modalInfo', modalInfo);
+
+  const openModal = (type) => dispatch(setModalInfo({ type }));
+
+  const closeModal = () => dispatch(setModalInfo({ type: null }));
 
   const channelsResponse = useGetChannelsQuery();
   console.log('channelsResponse', channelsResponse);
@@ -61,8 +79,9 @@ const ChatPage = () => {
           </div>
         ) : (
           <>
-            <ChannelsBox />
+            <ChannelsBox openModal={openModal} />
             <MessagesBox />
+            {renderModal({ modalInfo, closeModal })}
           </>
         )}
       </div>

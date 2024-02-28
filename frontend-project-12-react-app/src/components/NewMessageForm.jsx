@@ -78,6 +78,7 @@ const NewMessageForm = () => {
           value={formik.values.body}
           isInvalid={error}
           ref={inputRef}
+          required
         />
 
         <Button
