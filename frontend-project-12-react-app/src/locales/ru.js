@@ -5,7 +5,7 @@ const resources = {
         header: 'Войти',
         submitButton: 'Войти',
         username: 'Ваш ник',
-        password: 'Ваш пароль',
+        password: 'Пароль',
         signup: 'Регистрация',
         noAccount: 'Нет аккаунта?',
         validation: {
@@ -28,7 +28,7 @@ const resources = {
       },
       navbar: {
         logout: 'Выйти',
-        brand: 'Chat',
+        brand: 'Hexlet Chat',
       },
       channelModals: {
         addChannelHeader: 'Добавить канал',
@@ -40,8 +40,8 @@ const resources = {
         renameDropdown: 'Переименовать',
         deleteDropdown: 'Удалить',
         removeChannelBody: 'Уверены?',
-        channelAdded: 'Канал добавлен',
-        channelReamoved: 'Канал удален',
+        channelAdded: 'Канал создан',
+        channelReamoved: 'Канал удалён',
         channelRenamed: 'Канал переименован',
         validation: {
           required: 'Обязательное поле',
