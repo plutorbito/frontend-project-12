@@ -1,4 +1,4 @@
-Chat is a simple user-friendly web application for seamless communication. In this app users can exchange messages and create/manage their own channels. Use this link to access the app: : <https://frontend-project-12-y2zm.onrender.com/>
+Chat is a simple user-friendly web application for seamless communication. In this app users can exchange messages and create/manage their own channels. Use this link to access the app: <https://frontend-project-12-y2zm.onrender.com/>
 
 ### Hexlet tests and linter status:
 
