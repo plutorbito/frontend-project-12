@@ -17,5 +17,5 @@ start:
 	make start-backend & make start-frontend
 
 build:
-	rm frontend-project-12-react-app/build -rf
+	rm frontend/build -rf
 	npm run build
