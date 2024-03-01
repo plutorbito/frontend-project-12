@@ -1,11 +1,11 @@
 lint-frontend:
-	make -C frontend-project-12-react-app lint
+	make -C frontend lint
 
 install:
 	npm ci
 
 start-frontend:
-	make -C frontend-project-12-react-app start
+	make -C frontend start
 
 start-backend:
 	npx start-server
