@@ -92,7 +92,7 @@ const ChannelsBox = ({ openModal }) => {
                   variant={channel.id === activeChannelId ? 'secondary' : null}
                 >
                   <span className="visually-hidden">
-                    {t('channels.manageChannel')}
+                    {t('channelModals.manageChannel')}
                   </span>
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
