@@ -1,5 +1,5 @@
 {
-  "name": "frontend-project-12-react-app",
+  "name": "frontend",
   "version": "0.1.0",
   "private": true,
   "proxy": "http://localhost:5001",
