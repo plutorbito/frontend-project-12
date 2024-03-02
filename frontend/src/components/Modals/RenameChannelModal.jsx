@@ -82,6 +82,7 @@ const RenameChannelModal = ({ closeModal }) => {
                 onChange={formik.handleChange}
                 isInvalid={error}
                 ref={inputRef}
+                id="name"
               />
               <label className="visually-hidden" htmlFor="name">
                 {t('channelModals.channelName')}
