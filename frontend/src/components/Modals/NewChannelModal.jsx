@@ -1,15 +1,18 @@
 import { useState, useRef, useEffect } from 'react';
 import { useFormik } from 'formik';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Button, Form, Modal } from 'react-bootstrap';
 import { validateChannel } from '../../utils/validate.js';
 import { useAddChannelsMutation } from '../../api.js';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import checkBadWords from '../../utils/checkBadWords.js';
+import { setActiveChannel } from '../../slices/channelsSlice.js';
 
 const NewChannelModal = ({ closeModal }) => {
   const [error, setError] = useState('');
+
+  const dispatch = useDispatch();
 
   const inputRef = useRef(null);
 
@@ -41,6 +44,7 @@ const NewChannelModal = ({ closeModal }) => {
         const filteredChannel = { name: checkBadWords(name) };
 
         const response = await addChannels(filteredChannel);
+        dispatch(setActiveChannel(response.data.id));
 
         console.log('submitted channel response', response);
 

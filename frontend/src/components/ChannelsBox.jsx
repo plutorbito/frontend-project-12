@@ -22,8 +22,8 @@ const ChannelsBox = ({ openModal }) => {
 
   useEffect(() => {
     socket.on('newChannel', (payload) => {
+      console.log('newChannel payload', payload);
       dispatch(addNewChannel(payload));
-      dispatch(setActiveChannel(payload.id));
       console.log('socket new channel', payload);
     });
     socket.on('renameChannel', (payload) => {
