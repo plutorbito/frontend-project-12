@@ -74,6 +74,7 @@ const NewMessageForm = () => {
           type="text"
           name="body"
           placeholder={t('newMessageForm.formPlaceholder')}
+          aria-label={t('newMessageForm.ariaLabel')}
           onChange={formik.handleChange}
           value={formik.values.body}
           isInvalid={error}
