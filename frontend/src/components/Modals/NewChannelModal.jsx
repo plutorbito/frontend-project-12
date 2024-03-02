@@ -74,7 +74,9 @@ const NewChannelModal = ({ closeModal }) => {
                 isInvalid={error}
                 ref={inputRef}
               />
-
+              <label className="visually-hidden" htmlFor="name">
+                {t('channelModals.channelName')}
+              </label>
               <Form.Control.Feedback type="invalid">
                 {error}
               </Form.Control.Feedback>
