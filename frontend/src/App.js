@@ -8,6 +8,7 @@ import {
 } from 'react-router-dom';
 import { Provider, ErrorBoundary } from '@rollbar/react';
 import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 import NotFoundPage from './components/NotFoundPage';
 import LoginPage from './components/LoginPage';
 import ChatPage from './components/ChatPage';
@@ -16,7 +17,6 @@ import { ROUTERS } from './utils/router';
 import AuthContext from './contexts';
 import useAuth from './hooks';
 import SignupPage from './components/SignupPage';
-import { ToastContainer } from 'react-toastify';
 
 const rollbarConfig = {
   accessToken: process.env.REACT_APP_ROLLBAR_ACCESSTOKEN,
@@ -52,45 +52,43 @@ const ChatRoute = ({ children }) => {
   );
 };
 
-const App = () => {
-  return (
-    <AuthProvider>
-      <Provider config={rollbarConfig}>
-        <ErrorBoundary>
-          <BrowserRouter>
-            <div className="d-flex flex-column h-100">
-              <NavbarElement />
-              <Routes>
-                <Route path={ROUTERS.loginPage} element={<LoginPage />} />
-                <Route path={ROUTERS.other} element={<NotFoundPage />} />
-                <Route
-                  path={ROUTERS.chatPage}
-                  element={
-                    <ChatRoute>
-                      <ChatPage />
-                    </ChatRoute>
-                  }
-                />
-                <Route path={ROUTERS.signupPage} element={<SignupPage />} />
-              </Routes>
-            </div>
-            <ToastContainer
-              position="top-right"
-              autoClose={3000}
-              hideProgressBar={false}
-              newestOnTop={false}
-              closeOnClick
-              rtl={false}
-              pauseOnFocusLoss
-              draggable
-              pauseOnHover
-              theme="light"
-            />
-          </BrowserRouter>
-        </ErrorBoundary>
-      </Provider>
-    </AuthProvider>
-  );
-};
+const App = () => (
+  <AuthProvider>
+    <Provider config={rollbarConfig}>
+      <ErrorBoundary>
+        <BrowserRouter>
+          <div className="d-flex flex-column h-100">
+            <NavbarElement />
+            <Routes>
+              <Route path={ROUTERS.loginPage} element={<LoginPage />} />
+              <Route path={ROUTERS.other} element={<NotFoundPage />} />
+              <Route
+                path={ROUTERS.chatPage}
+                element={
+                  (<ChatRoute>
+                    <ChatPage />
+                  </ChatRoute>)
+                }
+              />
+              <Route path={ROUTERS.signupPage} element={<SignupPage />} />
+            </Routes>
+          </div>
+          <ToastContainer
+            position="top-right"
+            autoClose={3000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+          />
+        </BrowserRouter>
+      </ErrorBoundary>
+    </Provider>
+  </AuthProvider>
+);
 
 export default App;

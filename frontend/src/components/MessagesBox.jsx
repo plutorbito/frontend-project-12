@@ -1,11 +1,11 @@
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import NewMessageForm from './NewMessageForm';
 import getActiveChannelName from '../utils/getActiveChannelName';
-import { useTranslation } from 'react-i18next';
 
 const MessagesBox = () => {
   const { channels, activeChannelId } = useSelector(
-    (state) => state.channelsReducer
+    (state) => state.channelsReducer,
   );
 
   const { messages } = useSelector((state) => state.messagesReducer);
@@ -16,7 +16,7 @@ const MessagesBox = () => {
   console.log('messages in messagebox', messages);
 
   const messagesToRender = messages.filter(
-    (message) => message.channelId === activeChannelId
+    (message) => message.channelId === activeChannelId,
   );
 
   console.log('messages to render', messagesToRender);
@@ -26,7 +26,8 @@ const MessagesBox = () => {
       <div className="d-flex flex-column h-100">
         <div className="bg-light mb-4 p-3 shadow-sm small">
           <p className="m-0">
-            <b># {getActiveChannelName(channels, activeChannelId)}</b>
+            <b># 
+              {getActiveChannelName(channels, activeChannelId)}</b>
           </p>
           <span className="text-muted">
             {`${messagesToRender.length} ${t('newMessageForm.messageCount', {
@@ -37,7 +38,8 @@ const MessagesBox = () => {
         <div id="messages-box" className="chat-messages overflow-auto px-5">
           {messagesToRender.map((message) => (
             <div key={message.id}>
-              <b>{message.user}</b>: {message.body}
+              <b>{message.user}</b>
+              : {message.body}
             </div>
           ))}
         </div>
