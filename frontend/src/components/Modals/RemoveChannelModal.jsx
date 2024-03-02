@@ -1,8 +1,8 @@
 import { Button, Modal } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
-import { useRemoveChannelsMutation } from '../../api.js';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import { useRemoveChannelsMutation } from '../../api.js';
 
 const RemoveChannelModal = ({ closeModal }) => {
   const { activeChannelId } = useSelector((state) => state.channelsReducer);
@@ -19,22 +19,20 @@ const RemoveChannelModal = ({ closeModal }) => {
   };
 
   return (
-    <>
-      <Modal show={true} onHide={closeModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>{t('channelModals.removeChannelHeader')}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>{t('channelModals.removeChannelBody')}</Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={closeModal}>
-            {t('channelModals.cancelButton')}
-          </Button>
-          <Button variant="danger" onClick={handleDeleteChannel}>
-            {t('channelModals.deleteButton')}
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    </>
+    <Modal show onHide={closeModal}>
+      <Modal.Header closeButton>
+        <Modal.Title>{t('channelModals.removeChannelHeader')}</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>{t('channelModals.removeChannelBody')}</Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={closeModal}>
+          {t('channelModals.cancelButton')}
+        </Button>
+        <Button variant="danger" onClick={handleDeleteChannel}>
+          {t('channelModals.deleteButton')}
+        </Button>
+      </Modal.Footer>
+    </Modal>
   );
 };
 

@@ -1,10 +1,10 @@
 import { useFormik } from 'formik';
 import React, { useState, useRef, useEffect } from 'react';
 import { Button, Form } from 'react-bootstrap';
-import signupImage from '../assets/signup.png';
 import { useLocation, useNavigate } from 'react-router-dom';
-import useAuth from '../hooks/index.jsx';
 import { useTranslation } from 'react-i18next';
+import signupImage from '../assets/signup.png';
+import useAuth from '../hooks/index.jsx';
 import { signupFormSchema } from '../utils/validate.js';
 import { useSendNewUserDataMutation } from '../api.js';
 import handleResponseError from '../utils/handleResponseErrors.js';
@@ -46,17 +46,8 @@ const SignupPage = () => {
             logIn,
             setError,
             navigate,
-            location
+            location,
           );
-          // logIn();
-          // setError('');
-          // const userId = {
-          //   token: response.data.token,
-          //   username: response.data.username,
-          // };
-          // localStorage.setItem('userId', JSON.stringify(userId));
-
-          // navigate(location.state?.from || '/');
         }
       } catch (err) {
         console.log(err);

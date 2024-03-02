@@ -4,13 +4,14 @@ import messagesReducer from './messagesSlice';
 import ModalsReducer from './modalsSlice';
 import { backendApi } from '../api.js';
 
-export const store = configureStore({
+const store = configureStore({
   reducer: {
     channelsReducer,
     messagesReducer,
     ModalsReducer,
     [backendApi.reducerPath]: backendApi.reducer,
   },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(backendApi.middleware),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(backendApi.middleware),
 });
+
+export default store;

@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { removeChannel } from './channelsSlice';
 import _ from 'lodash';
+import { removeChannel } from './channelsSlice';
 
 const initialState = {
   messages: [],
@@ -22,7 +22,7 @@ export const messagesSlice = createSlice({
       const currentChannelId = action.payload;
       _.remove(
         state.messages,
-        ({ channelId }) => channelId === currentChannelId
+        ({ channelId }) => channelId === currentChannelId,
       );
     });
   },

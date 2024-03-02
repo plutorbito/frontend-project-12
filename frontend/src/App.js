@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   BrowserRouter,
   Routes,
@@ -13,7 +13,7 @@ import NotFoundPage from './components/NotFoundPage';
 import LoginPage from './components/LoginPage';
 import ChatPage from './components/ChatPage';
 import NavbarElement from './components/Navbar';
-import { ROUTERS } from './utils/router';
+import ROUTERS from './utils/router';
 import AuthContext from './contexts';
 import useAuth from './hooks';
 import SignupPage from './components/SignupPage';
@@ -34,10 +34,10 @@ const AuthProvider = ({ children }) => {
     setLoggedIn(false);
   };
 
+  const loginData = useMemo(() => ({ loggedIn, logIn, logOut }), [loggedIn]);
+
   return (
-    <AuthContext.Provider value={{ loggedIn, logIn, logOut }}>
-      {children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={loginData}>{children}</AuthContext.Provider>
   );
 };
 
@@ -65,9 +65,11 @@ const App = () => (
               <Route
                 path={ROUTERS.chatPage}
                 element={
-                  (<ChatRoute>
-                    <ChatPage />
-                  </ChatRoute>)
+                  (
+                    <ChatRoute>
+                      <ChatPage />
+                    </ChatRoute>
+                  )
                 }
               />
               <Route path={ROUTERS.signupPage} element={<SignupPage />} />

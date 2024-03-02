@@ -2,10 +2,10 @@ import { useState, useRef, useEffect } from 'react';
 import { useFormik } from 'formik';
 import { useSelector, useDispatch } from 'react-redux';
 import { Button, Form, Modal } from 'react-bootstrap';
-import { validateChannel } from '../../utils/validate.js';
-import { useAddChannelsMutation } from '../../api.js';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import { validateChannel } from '../../utils/validate.js';
+import { useAddChannelsMutation } from '../../api.js';
 import checkBadWords from '../../utils/checkBadWords.js';
 import { setActiveChannel } from '../../slices/channelsSlice.js';
 
@@ -25,7 +25,6 @@ const NewChannelModal = ({ closeModal }) => {
   const handleClose = () => {
     setError('');
     closeModal();
-    formik.resetForm();
   };
 
   const [addChannels] = useAddChannelsMutation();
@@ -61,47 +60,41 @@ const NewChannelModal = ({ closeModal }) => {
   });
 
   return (
-    <>
-      <Modal show={true} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>{t('channelModals.addChannelHeader')}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form onSubmit={formik.handleSubmit}>
-            <Form.Group className="mb-3" controlId="addChannel">
-              <Form.Control
-                type="text"
-                name="name"
-                autoFocus
-                value={formik.values.name}
-                onChange={formik.handleChange}
-                isInvalid={error}
-                ref={inputRef}
-              />
-              <label className="visually-hidden" htmlFor="name">
-                {t('channelModals.channelName')}
-              </label>
-              <Form.Control.Feedback type="invalid">
-                {error}
-              </Form.Control.Feedback>
-            </Form.Group>
+    <Modal show onHide={handleClose}>
+      <Modal.Header closeButton>
+        <Modal.Title>{t('channelModals.addChannelHeader')}</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Form onSubmit={formik.handleSubmit}>
+          <Form.Group className="mb-3" controlId="addChannel">
+            <Form.Control
+              type="text"
+              name="name"
+              autoFocus
+              value={formik.values.name}
+              onChange={formik.handleChange}
+              isInvalid={error}
+              ref={inputRef}
+            />
+            <label className="visually-hidden" htmlFor="name">
+              {t('channelModals.channelName')}
+            </label>
+            <Form.Control.Feedback type="invalid">
+              {error}
+            </Form.Control.Feedback>
+          </Form.Group>
 
-            <div className="d-flex justify-content-end">
-              <Button
-                variant="secondary"
-                className="me-2"
-                onClick={handleClose}
-              >
-                {t('channelModals.cancelButton')}
-              </Button>
-              <Button variant="primary" type="submit">
-                {t('channelModals.submitButton')}
-              </Button>
-            </div>
-          </Form>
-        </Modal.Body>
-      </Modal>
-    </>
+          <div className="d-flex justify-content-end">
+            <Button variant="secondary" className="me-2" onClick={handleClose}>
+              {t('channelModals.cancelButton')}
+            </Button>
+            <Button variant="primary" type="submit">
+              {t('channelModals.submitButton')}
+            </Button>
+          </div>
+        </Form>
+      </Modal.Body>
+    </Modal>
   );
 };
 

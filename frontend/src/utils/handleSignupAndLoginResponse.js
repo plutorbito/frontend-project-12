@@ -3,7 +3,7 @@ const handleSignupAndLoginResponse = (
   logIn,
   setError,
   navigate,
-  location
+  location,
 ) => {
   logIn();
   setError('');

@@ -8,7 +8,7 @@ import {
   renameChannel,
   removeChannel,
 } from '../slices/channelsSlice.js';
-import { socket } from '../socket.js';
+import socket from '../socket.js';
 
 const ChannelsBox = ({ openModal }) => {
   const { channels, activeChannelId } = useSelector(

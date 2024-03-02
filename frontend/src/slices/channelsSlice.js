@@ -23,9 +23,8 @@ export const channelsSlice = createSlice({
       const { channels } = state;
       const { name, id } = action.payload;
       console.log(action.payload);
-      const newChannels = channels.map((channel) =>
-        channel.id === id ? { ...channel, name: name } : channel
-      );
+      const newChannels = channels.map((channel) => (
+        channel.id === id ? { ...channel, name } : channel));
       console.log('newChannels', newChannels);
       state.channels = newChannels;
     },

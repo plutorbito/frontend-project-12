@@ -26,8 +26,10 @@ const MessagesBox = () => {
       <div className="d-flex flex-column h-100">
         <div className="bg-light mb-4 p-3 shadow-sm small">
           <p className="m-0">
-            <b># 
-              {getActiveChannelName(channels, activeChannelId)}</b>
+            <b>
+              #
+              {getActiveChannelName(channels, activeChannelId)}
+            </b>
           </p>
           <span className="text-muted">
             {`${messagesToRender.length} ${t('newMessageForm.messageCount', {
@@ -39,7 +41,8 @@ const MessagesBox = () => {
           {messagesToRender.map((message) => (
             <div key={message.id}>
               <b>{message.user}</b>
-              : {message.body}
+              :
+              {` ${message.body}`}
             </div>
           ))}
         </div>
