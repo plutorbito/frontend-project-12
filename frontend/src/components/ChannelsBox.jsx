@@ -91,7 +91,9 @@ const ChannelsBox = ({ openModal }) => {
                   className="flex-grow-0"
                   variant={channel.id === activeChannelId ? 'secondary' : null}
                 >
-                  <span className="visually-hidden">?</span>
+                  <span className="visually-hidden">
+                    {t('channels.manageChannel')}
+                  </span>
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                   <Dropdown.Item onClick={() => openModal('removing')}>

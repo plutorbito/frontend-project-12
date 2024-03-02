@@ -44,6 +44,7 @@ const resources = {
         channelReamoved: 'Канал удалён',
         channelRenamed: 'Канал переименован',
         channelName: 'Имя канала',
+        manageChannel: 'Управление каналом',
         validation: {
           required: 'Обязательное поле',
           channelLength: 'От 3 до 20 символов',
