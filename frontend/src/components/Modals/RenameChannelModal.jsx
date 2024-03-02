@@ -16,6 +16,7 @@ const RenameChannelModal = ({ closeModal }) => {
 
   useEffect(() => {
     inputRef.current.focus();
+    inputRef.current.select();
   }, []);
 
   const { channels, activeChannelId } = useSelector(
