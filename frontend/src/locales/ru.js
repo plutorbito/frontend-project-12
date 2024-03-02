@@ -59,7 +59,7 @@ const resources = {
       },
       newMessageForm: {
         formPlaceholder: 'Введите сообщение...',
-        ariaLabel: 'Введите сообщение',
+        ariaLabel: 'Новое сообщение',
         sendMessageError: 'Ошибка отправки сообщения',
         send: 'Отправить',
         messageCount_zero: 'сообщений',
