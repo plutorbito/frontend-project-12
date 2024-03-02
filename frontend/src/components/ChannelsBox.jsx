@@ -1,18 +1,18 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { Button, Dropdown, ButtonGroup } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import {
   addNewChannel,
   setActiveChannel,
   renameChannel,
   removeChannel,
 } from '../slices/channelsSlice.js';
-import { Button, Dropdown, ButtonGroup } from 'react-bootstrap';
 import { socket } from '../socket.js';
-import { useTranslation } from 'react-i18next';
 
 const ChannelsBox = ({ openModal }) => {
   const { channels, activeChannelId } = useSelector(
-    (state) => state.channelsReducer
+    (state) => state.channelsReducer,
   );
   console.log('channels in channelbox', channels, activeChannelId);
 
@@ -108,7 +108,7 @@ const ChannelsBox = ({ openModal }) => {
               <Button
                 type="button"
                 id={channel.id}
-                className={'w-100 rounded-0 text-start text-truncate'}
+                className="w-100 rounded-0 text-start text-truncate"
                 onClick={() => dispatch(setActiveChannel(channel.id))}
                 variant={channel.id === activeChannelId ? 'secondary' : null}
               >

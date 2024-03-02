@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { Spinner } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import { setChannels, setActiveChannel } from '../slices/channelsSlice.js';
 import { setMessages } from '../slices/messagesSlice.js';
 import ChannelsBox from './ChannelsBox.jsx';
 import MessagesBox from './MessagesBox.jsx';
 import { useGetChannelsQuery, useGetMessagesQuery } from '../api.js';
-import { Spinner } from 'react-bootstrap';
-import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
 import getModal from './Modals/index.js';
 import { setModalInfo } from '../slices/modalsSlice.js';
 

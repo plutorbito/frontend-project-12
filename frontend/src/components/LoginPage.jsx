@@ -1,11 +1,11 @@
 import { useFormik } from 'formik';
 import React, { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
-import loginImage from '../assets/login.jpg';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import loginImage from '../assets/login.jpg';
 import useAuth from '../hooks/index.jsx';
 import { useSendLoginDataMutation } from '../api.js';
-import { useTranslation } from 'react-i18next';
 import handleResponseError from '../utils/handleResponseErrors.js';
 import handleSignupAndLoginResponse from '../utils/handleSignupAndLoginResponse.js';
 
@@ -37,7 +37,7 @@ const LoginPage = () => {
             logIn,
             setError,
             navigate,
-            location
+            location,
           );
         }
       } catch (err) {
@@ -104,7 +104,8 @@ const LoginPage = () => {
             </div>
             <div className="card-footer p-4">
               <div className="text-center">
-                <span>{t('login.noAccount')}</span>{' '}
+                <span>{t('login.noAccount')}</span>
+                {' '}
                 <Link to="/signup">{t('login.signup')}</Link>
               </div>
             </div>

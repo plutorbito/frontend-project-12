@@ -6,6 +6,8 @@ import {
   useLocation,
   Navigate,
 } from 'react-router-dom';
+import { Provider, ErrorBoundary } from '@rollbar/react';
+import 'react-toastify/dist/ReactToastify.css';
 import NotFoundPage from './components/NotFoundPage';
 import LoginPage from './components/LoginPage';
 import ChatPage from './components/ChatPage';
@@ -15,8 +17,6 @@ import AuthContext from './contexts';
 import useAuth from './hooks';
 import SignupPage from './components/SignupPage';
 import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { Provider, ErrorBoundary } from '@rollbar/react';
 
 const rollbarConfig = {
   accessToken: process.env.REACT_APP_ROLLBAR_ACCESSTOKEN,
@@ -52,7 +52,7 @@ const ChatRoute = ({ children }) => {
   );
 };
 
-function App() {
+const App = () => {
   return (
     <AuthProvider>
       <Provider config={rollbarConfig}>
@@ -91,6 +91,6 @@ function App() {
       </Provider>
     </AuthProvider>
   );
-}
+};
 
 export default App;
