@@ -25,7 +25,7 @@ const ChatPage = () => {
 
   const { t } = useTranslation();
 
-  const modalInfo = useSelector((state) => state.ModalsReducer);
+  const modalInfo = useSelector((state) => state.modalsReducer);
   console.log('modalInfo', modalInfo);
 
   const openModal = (type) => dispatch(setModalInfo({ type }));

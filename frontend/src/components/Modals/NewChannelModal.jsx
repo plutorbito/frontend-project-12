@@ -39,8 +39,9 @@ const NewChannelModal = ({ closeModal }) => {
       try {
         const channelNamesArray = channels.map((channel) => channel.name);
         console.log('channelNamesArray', channelNamesArray);
-        await validateChannel(name, channelNamesArray);
+        // await validateChannel(name, channelNamesArray);
         const filteredChannel = { name: checkBadWords(name) };
+        await validateChannel(filteredChannel.name, channelNamesArray);
 
         const response = await addChannels(filteredChannel);
         dispatch(setActiveChannel(response.data.id));

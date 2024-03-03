@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import getAuthHeader from './utils/getAuthHeader.js';
+import getAuthHeader from './utils/getAuthHeader';
 
 export const backendApi = createApi({
   reducerPath: 'backend',
