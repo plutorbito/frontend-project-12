@@ -1,14 +1,15 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Button, Dropdown, ButtonGroup } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import {
   addNewChannel,
-  setActiveChannel,
   renameChannel,
   removeChannel,
 } from '../slices/channelsSlice.js';
 import socket from '../socket.js';
+import RemovableChannelButton from './ChannelsButtons/RemovableChannelButton.jsx';
+import UnremovableChannelButton from './ChannelsButtons/UnremovableChannelButton.jsx';
 
 const ChannelsBox = ({ openModal }) => {
   const { channels, activeChannelId } = useSelector(
@@ -32,7 +33,7 @@ const ChannelsBox = ({ openModal }) => {
     });
     socket.on('removeChannel', (payload) => {
       dispatch(removeChannel(payload.id));
-      dispatch(setActiveChannel(channels[0].id));
+      // dispatch(setActiveChannel(channels[0].id));
       console.log('socket remove channel', payload);
       console.log(activeChannelId);
     });
@@ -72,49 +73,9 @@ const ChannelsBox = ({ openModal }) => {
         {channels.map((channel) => (
           <li key={channel.id} className="nav-item w-100">
             {channel.removable ? (
-              <Dropdown
-                as={ButtonGroup}
-                className="d-flex"
-                onClick={() => dispatch(setActiveChannel(channel.id))}
-              >
-                <Button
-                  type="button"
-                  key={channel.id}
-                  className="w-100 rounded-0 text-start text-truncate"
-                  variant={channel.id === activeChannelId ? 'secondary' : null}
-                >
-                  <span className="me-1">#</span>
-                  {channel.name}
-                </Button>
-                <Dropdown.Toggle
-                  split
-                  className="flex-grow-0"
-                  variant={channel.id === activeChannelId ? 'secondary' : null}
-                >
-                  <span className="visually-hidden">
-                    {t('channelModals.manageChannel')}
-                  </span>
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
-                  <Dropdown.Item onClick={() => openModal('removing')}>
-                    {t('channelModals.deleteDropdown')}
-                  </Dropdown.Item>
-                  <Dropdown.Item onClick={() => openModal('renaming')}>
-                    {t('channelModals.renameDropdown')}
-                  </Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
+              <RemovableChannelButton openModal={openModal} channel={channel} />
             ) : (
-              <Button
-                type="button"
-                id={channel.id}
-                className="w-100 rounded-0 text-start text-truncate"
-                onClick={() => dispatch(setActiveChannel(channel.id))}
-                variant={channel.id === activeChannelId ? 'secondary' : null}
-              >
-                <span className="me-1">#</span>
-                {channel.name}
-              </Button>
+              <UnremovableChannelButton channel={channel} />
             )}
           </li>
         ))}

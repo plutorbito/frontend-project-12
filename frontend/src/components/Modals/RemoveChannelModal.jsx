@@ -1,11 +1,14 @@
 import { Button, Modal } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { useRemoveChannelsMutation } from '../../api.js';
+import { setActiveChannel } from '../../slices/channelsSlice.js';
 
 const RemoveChannelModal = ({ closeModal }) => {
   const { activeChannelId } = useSelector((state) => state.channelsReducer);
+  const { channels } = useSelector((state) => state.channelsReducer);
+  const dispatch = useDispatch();
 
   const [removeChannels] = useRemoveChannelsMutation();
 
@@ -13,6 +16,7 @@ const RemoveChannelModal = ({ closeModal }) => {
 
   const handleDeleteChannel = async () => {
     const response = await removeChannels(activeChannelId);
+    dispatch(setActiveChannel(channels[0].id));
     console.log('submitted channel remove response', response);
     closeModal();
     toast.success(t('channelModals.channelReamoved'));

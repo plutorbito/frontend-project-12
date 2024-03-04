@@ -28,6 +28,7 @@ const MessagesBox = () => {
           <p className="m-0">
             <b>
               #
+              {' '}
               {getActiveChannelName(channels, activeChannelId)}
             </b>
           </p>
