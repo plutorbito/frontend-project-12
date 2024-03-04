@@ -32,37 +32,47 @@ const ChatPage = () => {
 
   const closeModal = () => dispatch(setModalInfo({ type: null }));
 
-  const channelsResponse = useGetChannelsQuery();
-  console.log('channelsResponse', channelsResponse);
+  const {
+    isSuccess: channelsResponseIsSuccess,
+    data: channelsResponsData,
+    isError: channelsResponseIsError,
+    isLoading: channelsResponseIsLoading,
+  } = useGetChannelsQuery();
 
   useEffect(() => {
-    if (channelsResponse.isSuccess) {
-      console.log(channelsResponse.data);
-      dispatch(setChannels(channelsResponse.data));
-      dispatch(setActiveChannel(channelsResponse.data[0].id));
-    } else if (channelsResponse.isError) {
+    if (channelsResponseIsSuccess) {
+      console.log(channelsResponsData);
+      dispatch(setChannels(channelsResponsData));
+      dispatch(setActiveChannel(channelsResponsData[0].id));
+    } else if (channelsResponseIsError) {
       toast.error(t('chatPage.getChannelsError'));
     }
   }, [
-    channelsResponse.data,
-    channelsResponse.isError,
-    channelsResponse.isSuccess,
+    channelsResponsData,
+    channelsResponseIsError,
+    channelsResponseIsSuccess,
     dispatch,
     t,
   ]);
 
-  const messagesResponse = useGetMessagesQuery();
+  const {
+    isSuccess: messagesResponseIsSuccess,
+    data: messagesResponseData,
+    isError: messagesResponseIsError,
+    isLoading: messagesResponseIsLoading,
+  } = useGetMessagesQuery();
+
   useEffect(() => {
-    if (messagesResponse.isSuccess) {
-      console.log(messagesResponse.data);
-      dispatch(setMessages(messagesResponse.data));
-    } else if (messagesResponse.isError) {
+    if (messagesResponseIsSuccess) {
+      console.log(messagesResponseData);
+      dispatch(setMessages(messagesResponseData));
+    } else if (messagesResponseIsError) {
       toast.error(t('chatPage.getMessagesError'));
     }
   }, [
-    messagesResponse.data,
-    messagesResponse.isError,
-    messagesResponse.isSuccess,
+    messagesResponseData,
+    messagesResponseIsError,
+    messagesResponseIsSuccess,
     dispatch,
     t,
   ]);
@@ -70,7 +80,7 @@ const ChatPage = () => {
   return (
     <div className="container h-100 my-4 overflow-hidden rounded shadow">
       <div className="row h-100 bg-white flex-md-row">
-        {channelsResponse.isLoading || messagesResponse.isLoading ? (
+        {channelsResponseIsLoading || messagesResponseIsLoading ? (
           <div className="d-flex">
             <Spinner animation="grow" />
             <span style={{ marginLeft: '0.5rem' }}>
