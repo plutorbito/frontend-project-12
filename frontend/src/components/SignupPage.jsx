@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import signupImage from '../assets/signup.png';
 import useAuth from '../hooks/index.jsx';
-import { signupFormSchema } from '../utils/validate.js';
+import { validateSignupForm } from '../utils/validate.js';
 import { useSendNewUserDataMutation } from '../api.js';
 import handleResponseError from '../utils/handleResponseErrors.js';
 
@@ -30,7 +30,8 @@ const SignupPage = () => {
       password: '',
       confirmPassword: '',
     },
-    validationSchema: signupFormSchema,
+    validationSchema: validateSignupForm(t),
+    validateOnChange: false,
     onSubmit: async (values) => {
       try {
         console.log(values);

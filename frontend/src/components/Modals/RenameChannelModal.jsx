@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { useFormik } from 'formik';
 import { useSelector } from 'react-redux';
 import { Button, Form, Modal } from 'react-bootstrap';
@@ -10,8 +10,6 @@ import { useRenameChannelsMutation } from '../../api.js';
 import checkBadWords from '../../utils/checkBadWords.js';
 
 const RenameChannelModal = ({ closeModal }) => {
-  const [error, setError] = useState('');
-
   const inputRef = useRef(null);
 
   useEffect(() => {
@@ -32,34 +30,30 @@ const RenameChannelModal = ({ closeModal }) => {
   const { t } = useTranslation();
 
   const handleClose = () => {
-    setError('');
     closeModal();
   };
+
+  const channelNamesArray = channels.map((channel) => channel.name);
 
   const formik = useFormik({
     initialValues: {
       name: currentChannelName,
     },
+    validationSchema: validateChannel(channelNamesArray, t),
+    validateOnChange: false,
     onSubmit: async ({ name }) => {
-      try {
-        const channelNamesArray = channels.map((channel) => channel.name);
-        await validateChannel(name, channelNamesArray);
-        const filteredChannel = {
-          id: activeChannelId,
-          newName: checkBadWords(name),
-        };
-        console.log(filteredChannel);
+      const filteredChannel = {
+        id: activeChannelId,
+        newName: checkBadWords(name),
+      };
+      console.log(filteredChannel);
 
-        const response = await renameChannels(filteredChannel);
-        console.log('submitted channel rename response', response);
+      const response = await renameChannels(filteredChannel);
+      console.log('submitted channel rename response', response);
 
-        toast.success(t('channelModals.channelRenamed'));
-        setError('');
-        handleClose();
-        formik.resetForm();
-      } catch (err) {
-        setError(err.message);
-      }
+      toast.success(t('channelModals.channelRenamed'));
+      handleClose();
+      formik.resetForm();
       inputRef.current.focus();
     },
   });
@@ -78,7 +72,7 @@ const RenameChannelModal = ({ closeModal }) => {
               name="name"
               value={formik.values.name}
               onChange={formik.handleChange}
-              isInvalid={error}
+              isInvalid={formik.errors.name}
               ref={inputRef}
               id="name"
             />
@@ -86,7 +80,7 @@ const RenameChannelModal = ({ closeModal }) => {
               {t('channelModals.channelName')}
             </label>
             <Form.Control.Feedback type="invalid">
-              {error}
+              {formik.errors.name}
             </Form.Control.Feedback>
           </Form.Group>
 

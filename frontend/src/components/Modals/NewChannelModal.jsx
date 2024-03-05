@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import { useFormik } from 'formik';
 import { useSelector, useDispatch } from 'react-redux';
 import { Button, Form, Modal } from 'react-bootstrap';
@@ -10,8 +10,6 @@ import checkBadWords from '../../utils/checkBadWords.js';
 import { setActiveChannel } from '../../slices/channelsSlice.js';
 
 const NewChannelModal = ({ closeModal }) => {
-  const [error, setError] = useState('');
-
   const dispatch = useDispatch();
 
   const inputRef = useRef(null);
@@ -23,7 +21,6 @@ const NewChannelModal = ({ closeModal }) => {
   const { channels } = useSelector((state) => state.channelsReducer);
 
   const handleClose = () => {
-    setError('');
     closeModal();
   };
 
@@ -31,31 +28,27 @@ const NewChannelModal = ({ closeModal }) => {
 
   const { t } = useTranslation();
 
+  const channelNamesArray = channels.map((channel) => channel.name);
+
   const formik = useFormik({
     initialValues: {
       name: '',
     },
+    validationSchema: validateChannel(channelNamesArray, t),
+    validateOnChange: false,
     onSubmit: async ({ name }) => {
-      try {
-        const channelNamesArray = channels.map((channel) => channel.name);
-        console.log('channelNamesArray', channelNamesArray);
-        // await validateChannel(name, channelNamesArray);
-        const filteredChannel = { name: checkBadWords(name) };
-        await validateChannel(filteredChannel.name, channelNamesArray);
+      const filteredChannel = { name: checkBadWords(name) };
 
-        const response = await addChannels(filteredChannel);
-        dispatch(setActiveChannel(response.data.id));
+      const response = await addChannels(filteredChannel);
+      console.log(response);
+      dispatch(setActiveChannel(response.data.id));
 
-        console.log('submitted channel response', response);
+      console.log('submitted channel response', response);
 
-        toast.success(t('channelModals.channelAdded'));
+      toast.success(t('channelModals.channelAdded'));
 
-        setError('');
-        handleClose();
-        formik.resetForm();
-      } catch (err) {
-        setError(err.message);
-      }
+      handleClose();
+      formik.resetForm();
       inputRef.current.focus();
     },
   });
@@ -74,14 +67,14 @@ const NewChannelModal = ({ closeModal }) => {
               autoFocus
               value={formik.values.name}
               onChange={formik.handleChange}
-              isInvalid={error}
+              isInvalid={formik.errors.name}
               ref={inputRef}
             />
             <label className="visually-hidden" htmlFor="name">
               {t('channelModals.channelName')}
             </label>
             <Form.Control.Feedback type="invalid">
-              {error}
+              {formik.errors.name}
             </Form.Control.Feedback>
           </Form.Group>
 
