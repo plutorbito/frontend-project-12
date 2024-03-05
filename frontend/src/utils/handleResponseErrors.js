@@ -1,23 +1,28 @@
-const handleResponseError = (err, setError, t) => {
+const handleResponseError = (err) => {
   switch (err.status) {
     case 409: {
-      setError(t('signup.validation.userExists'));
-      break;
+      return 'signup.validation.userExists';
+      // setError(t('signup.validation.userExists'));
+      // break;
     }
     case 401: {
-      setError(t('login.validation.authFailed'));
-      break;
+      return 'login.validation.authFailed';
+      // setError(t('login.validation.authFailed'));
+      // break;
     }
     case 'FETCH_ERROR': {
-      setError(t('errors.network'));
-      break;
+      return 'errors.network';
+      // setError(t('errors.network'));
+      // break;
     }
     case 'PARSING_ERROR': {
-      setError(t('errors.post'));
-      break;
+      return 'errors.post';
+      // setError(t('errors.post'));
+      // break;
     }
     default: {
-      setError(t('errors.unknown'));
+      return 'errors.unknown';
+      // setError(t('errors.unknown'));
     }
   }
 };
