@@ -7,7 +7,7 @@ import loginImage from '../assets/login.jpg';
 import useAuth from '../hooks/index.jsx';
 import { useSendLoginDataMutation } from '../api.js';
 import handleResponseError from '../utils/handleResponseErrors.js';
-import handleSignupAndLoginResponse from '../utils/handleSignupAndLoginResponse.js';
+// import handleSignupAndLoginResponse from '../utils/handleSignupAndLoginResponse.js';
 
 const LoginPage = () => {
   const [error, setError] = useState('');
@@ -32,13 +32,14 @@ const LoginPage = () => {
         if (response.error) {
           throw response.error;
         } else {
-          handleSignupAndLoginResponse(
-            response,
-            logIn,
-            setError,
-            navigate,
-            location,
-          );
+          logIn();
+          setError('');
+          const userId = {
+            token: response.data.token,
+            username: response.data.username,
+          };
+          localStorage.setItem('userId', JSON.stringify(userId));
+          navigate(location.state?.from || '/');
         }
       } catch (err) {
         console.log(err);

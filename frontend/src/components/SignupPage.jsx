@@ -8,7 +8,6 @@ import useAuth from '../hooks/index.jsx';
 import { signupFormSchema } from '../utils/validate.js';
 import { useSendNewUserDataMutation } from '../api.js';
 import handleResponseError from '../utils/handleResponseErrors.js';
-import handleSignupAndLoginResponse from '../utils/handleSignupAndLoginResponse.js';
 
 const SignupPage = () => {
   const [error, setError] = useState('');
@@ -41,13 +40,14 @@ const SignupPage = () => {
         if (response.error) {
           throw response.error;
         } else {
-          handleSignupAndLoginResponse(
-            response,
-            logIn,
-            setError,
-            navigate,
-            location,
-          );
+          logIn();
+          setError('');
+          const userId = {
+            token: response.data.token,
+            username: response.data.username,
+          };
+          localStorage.setItem('userId', JSON.stringify(userId));
+          navigate(location.state?.from || '/');
         }
       } catch (err) {
         console.log(err);
