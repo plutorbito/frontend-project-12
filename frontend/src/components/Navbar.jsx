@@ -6,7 +6,7 @@ import useAuth from '../hooks/useAuth';
 const NavbarElement = () => {
   const { t } = useTranslation();
   console.log(useAuth());
-  const { loggedIn, logOut } = useAuth();
+  const { loggedIn, logOut, username } = useAuth();
   return (
     <Navbar bg="white" expand="lg" className="shadow-sm">
       <Container>
@@ -17,9 +17,7 @@ const NavbarElement = () => {
           <Navbar>
             <Container>
               <Navbar.Brand>
-                <b>
-                  {JSON.parse(localStorage.getItem('userId')).username ?? null}
-                </b>
+                <b>{username ?? null}</b>
               </Navbar.Brand>
             </Container>
           </Navbar>

@@ -31,13 +31,13 @@ const LoginPage = () => {
         if (response.error) {
           throw response.error;
         } else {
-          logIn();
           setError('');
           const userId = {
             token: response.data.token,
             username: response.data.username,
           };
           localStorage.setItem('userId', JSON.stringify(userId));
+          logIn(userId.username);
           navigate(location.state?.from || '/');
         }
       } catch (err) {

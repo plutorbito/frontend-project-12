@@ -9,6 +9,7 @@ import { useSendMessageMutation } from '../api.js';
 import handleResponseError from '../utils/handleResponseErrors.js';
 import checkBadWords from '../utils/checkBadWords.js';
 import useSocket from '../hooks/useSocket.jsx';
+import useAuth from '../hooks/useAuth.jsx';
 
 const NewMessageForm = () => {
   const [error, setError] = useState('');
@@ -18,7 +19,9 @@ const NewMessageForm = () => {
 
   const { t } = useTranslation();
 
-  const user = JSON.parse(localStorage.getItem('userId')).username;
+  const { username } = useAuth();
+
+  // const user = JSON.parse(localStorage.getItem('userId')).username;
 
   const socket = useSocket();
 
@@ -44,7 +47,7 @@ const NewMessageForm = () => {
         const filteredMessage = {
           body: checkBadWords(body),
           channelId: activeChannelId,
-          user,
+          user: username,
         };
         const response = await sendMessage(filteredMessage);
         console.log('submitted message response', response);
