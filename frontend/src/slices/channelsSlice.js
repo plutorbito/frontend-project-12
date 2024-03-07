@@ -1,6 +1,5 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
-import _ from 'lodash';
 
 const initialState = {
   channels: [],
@@ -30,8 +29,10 @@ export const channelsSlice = createSlice({
       state.channels = newChannels;
     },
     removeChannel: (state, action) => {
+      const { channels } = state;
       const id = action.payload;
-      _.remove(state.channels, (channel) => channel.id === id);
+      const newChannels = channels.filter((channel) => channel.id !== id);
+      state.channels = newChannels;
     },
   },
 });

@@ -1,6 +1,5 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
-import _ from 'lodash';
 import { removeChannel } from './channelsSlice';
 
 const initialState = {
@@ -21,10 +20,11 @@ export const messagesSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(removeChannel, (state, action) => {
       const currentChannelId = action.payload;
-      _.remove(
-        state.messages,
-        ({ channelId }) => channelId === currentChannelId,
+      const { messages } = state;
+      const newMessages = messages.filter(
+        (message) => message.channelId !== currentChannelId,
       );
+      state.messages = newMessages;
     });
   },
 });
