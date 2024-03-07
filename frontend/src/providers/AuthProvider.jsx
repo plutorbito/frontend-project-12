@@ -3,7 +3,7 @@ import AuthContext from '../contexts/AuthContext';
 
 const AuthProvider = ({ children }) => {
   const [loggedIn, setLoggedIn] = useState(JSON.parse(localStorage.getItem('loginStatus')) ?? false);
-  const [username, setUsername] = useState(null);
+  const [username, setUsername] = useState(JSON.parse(localStorage.getItem('userId'))?.username ?? null);
 
   const logIn = (user) => {
     setLoggedIn(true);

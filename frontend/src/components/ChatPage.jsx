@@ -3,8 +3,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Spinner } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import { setChannels, setActiveChannel } from '../slices/channelsSlice.js';
-import { setMessages } from '../slices/messagesSlice.js';
+import { setActiveChannel } from '../slices/channelsSlice.js';
+// import { setMessages } from '../slices/messagesSlice.js';
 import ChannelsBox from './ChannelsBox.jsx';
 import MessagesBox from './MessagesBox.jsx';
 import { useGetChannelsQuery, useGetMessagesQuery } from '../api.js';
@@ -42,7 +42,7 @@ const ChatPage = () => {
   useEffect(() => {
     if (channelsResponseIsSuccess) {
       console.log(channelsResponsData);
-      dispatch(setChannels(channelsResponsData));
+      // dispatch(setChannels(channelsResponsData));
       dispatch(setActiveChannel(channelsResponsData[0].id));
     } else if (channelsResponseIsError) {
       toast.error(t('chatPage.getChannelsError'));
@@ -65,7 +65,7 @@ const ChatPage = () => {
   useEffect(() => {
     if (messagesResponseIsSuccess) {
       console.log(messagesResponseData);
-      dispatch(setMessages(messagesResponseData));
+      // dispatch(setMessages(messagesResponseData));
     } else if (messagesResponseIsError) {
       toast.error(t('chatPage.getMessagesError'));
     }
@@ -89,8 +89,11 @@ const ChatPage = () => {
           </div>
         ) : (
           <>
-            <ChannelsBox openModal={openModal} />
-            <MessagesBox />
+            <ChannelsBox openModal={openModal} channels={channelsResponsData} />
+            <MessagesBox
+              messages={messagesResponseData}
+              channels={channelsResponsData}
+            />
             {renderModal({ modalInfo, closeModal })}
           </>
         )}

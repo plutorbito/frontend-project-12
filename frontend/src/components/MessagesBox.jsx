@@ -3,12 +3,12 @@ import { useTranslation } from 'react-i18next';
 import NewMessageForm from './NewMessageForm';
 import getActiveChannelName from '../utils/getActiveChannelName';
 
-const MessagesBox = () => {
-  const { channels, activeChannelId } = useSelector(
+const MessagesBox = ({ messages, channels }) => {
+  const { activeChannelId } = useSelector(
     (state) => state.channelsReducer,
   );
 
-  const { messages } = useSelector((state) => state.messagesReducer);
+  // const { messages } = useSelector((state) => state.messagesReducer);
 
   const { t } = useTranslation();
 

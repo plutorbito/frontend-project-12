@@ -11,10 +11,8 @@ import RemovableChannelButton from './ChannelsButtons/RemovableChannelButton.jsx
 import UnremovableChannelButton from './ChannelsButtons/UnremovableChannelButton.jsx';
 import useSocket from '../hooks/useSocket.jsx';
 
-const ChannelsBox = ({ openModal }) => {
-  const { channels, activeChannelId } = useSelector(
-    (state) => state.channelsReducer,
-  );
+const ChannelsBox = ({ openModal, channels }) => {
+  const { activeChannelId } = useSelector((state) => state.channelsReducer);
   console.log('channels in channelbox', channels, activeChannelId);
 
   const dispatch = useDispatch();
