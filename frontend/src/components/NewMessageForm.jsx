@@ -5,10 +5,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { addNewMessage } from '../slices/messagesSlice.js';
-import socket from '../socket.js';
 import { useSendMessageMutation } from '../api.js';
 import handleResponseError from '../utils/handleResponseErrors.js';
 import checkBadWords from '../utils/checkBadWords.js';
+import useSocket from '../hooks/useSocket.jsx';
 
 const NewMessageForm = () => {
   const [error, setError] = useState('');
@@ -20,6 +20,8 @@ const NewMessageForm = () => {
 
   const user = JSON.parse(localStorage.getItem('userId')).username;
 
+  const socket = useSocket();
+
   useEffect(() => {
     socket.on('newMessage', (payload) => {
       dispatch(addNewMessage(payload));
@@ -28,7 +30,7 @@ const NewMessageForm = () => {
     return () => {
       socket.off('newMessage');
     };
-  }, [dispatch]);
+  }, [dispatch, socket]);
 
   const [sendMessage, { isLoading }] = useSendMessageMutation();
 
@@ -57,7 +59,6 @@ const NewMessageForm = () => {
       } catch (err) {
         console.log(err);
         setError(t(handleResponseError(err)));
-        // handleResponseError(err, setError, t);
       }
       inputRef.current.focus();
     },

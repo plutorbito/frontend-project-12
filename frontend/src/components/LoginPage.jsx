@@ -4,10 +4,9 @@ import { Button, Form } from 'react-bootstrap';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import loginImage from '../assets/login.jpg';
-import useAuth from '../hooks/index.jsx';
+import useAuth from '../hooks/useAuth.jsx';
 import { useSendLoginDataMutation } from '../api.js';
 import handleResponseError from '../utils/handleResponseErrors.js';
-// import handleSignupAndLoginResponse from '../utils/handleSignupAndLoginResponse.js';
 
 const LoginPage = () => {
   const [error, setError] = useState('');
@@ -44,7 +43,6 @@ const LoginPage = () => {
       } catch (err) {
         console.log(err);
         setError(t(handleResponseError(err)));
-        // handleResponseError(err, setError, t);
       }
     },
   });

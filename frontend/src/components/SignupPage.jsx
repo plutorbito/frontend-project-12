@@ -4,7 +4,7 @@ import { Button, Form } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import signupImage from '../assets/signup.png';
-import useAuth from '../hooks/index.jsx';
+import useAuth from '../hooks/useAuth.jsx';
 import { validateSignupForm } from '../utils/validate.js';
 import { useSendNewUserDataMutation } from '../api.js';
 import handleResponseError from '../utils/handleResponseErrors.js';

@@ -1,5 +1,4 @@
 import * as yup from 'yup';
-// import i18n from '../i18n';
 
 const validateChannel = (array, t) => yup.object().shape({
   name: yup

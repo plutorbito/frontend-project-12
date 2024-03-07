@@ -7,9 +7,9 @@ import {
   renameChannel,
   removeChannel,
 } from '../slices/channelsSlice.js';
-import socket from '../socket.js';
 import RemovableChannelButton from './ChannelsButtons/RemovableChannelButton.jsx';
 import UnremovableChannelButton from './ChannelsButtons/UnremovableChannelButton.jsx';
+import useSocket from '../hooks/useSocket.jsx';
 
 const ChannelsBox = ({ openModal }) => {
   const { channels, activeChannelId } = useSelector(
@@ -20,6 +20,8 @@ const ChannelsBox = ({ openModal }) => {
   const dispatch = useDispatch();
 
   const { t } = useTranslation();
+
+  const socket = useSocket();
 
   useEffect(() => {
     socket.on('newChannel', (payload) => {
@@ -33,7 +35,6 @@ const ChannelsBox = ({ openModal }) => {
     });
     socket.on('removeChannel', (payload) => {
       dispatch(removeChannel(payload.id));
-      // dispatch(setActiveChannel(channels[0].id));
       console.log('socket remove channel', payload);
       console.log(activeChannelId);
     });
@@ -42,7 +43,7 @@ const ChannelsBox = ({ openModal }) => {
       socket.off('renameChannel');
       socket.off('removeChannel');
     };
-  }, [activeChannelId, channels, dispatch]);
+  }, [activeChannelId, channels, dispatch, socket]);
 
   return (
     <div className="col-4 col-md-2 border-end px-0 bg-light flex-column h-100 d-flex">
