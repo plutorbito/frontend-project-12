@@ -1,6 +1,6 @@
 import { useRef, useEffect } from 'react';
 import { useFormik } from 'formik';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Button, Form, Modal } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
@@ -8,8 +8,9 @@ import { validateChannel } from '../../utils/validate.js';
 import { useAddChannelsMutation } from '../../api.js';
 import checkBadWords from '../../utils/checkBadWords.js';
 import { setActiveChannel } from '../../slices/channelsSlice.js';
+import { getChannelNamesArray } from '../../utils/getChannelsData.js';
 
-const NewChannelModal = ({ closeModal }) => {
+const NewChannelModal = ({ closeModal, channels }) => {
   const dispatch = useDispatch();
 
   const inputRef = useRef(null);
@@ -17,8 +18,6 @@ const NewChannelModal = ({ closeModal }) => {
   useEffect(() => {
     inputRef.current.focus();
   }, []);
-
-  const { channels } = useSelector((state) => state.channelsReducer);
 
   const handleClose = () => {
     closeModal();
@@ -28,7 +27,7 @@ const NewChannelModal = ({ closeModal }) => {
 
   const { t } = useTranslation();
 
-  const channelNamesArray = channels.map((channel) => channel.name);
+  const channelNamesArray = getChannelNamesArray(channels);
 
   const formik = useFormik({
     initialValues: {
@@ -40,7 +39,7 @@ const NewChannelModal = ({ closeModal }) => {
       const filteredChannel = { name: checkBadWords(name) };
 
       const response = await addChannels(filteredChannel);
-      console.log(response);
+      console.log('response in newChannelModal', response);
       dispatch(setActiveChannel(response.data.id));
 
       console.log('submitted channel response', response);

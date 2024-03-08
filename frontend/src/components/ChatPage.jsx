@@ -3,21 +3,19 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Spinner } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import { setActiveChannel } from '../slices/channelsSlice.js';
-// import { setMessages } from '../slices/messagesSlice.js';
 import ChannelsBox from './ChannelsBox.jsx';
 import MessagesBox from './MessagesBox.jsx';
 import { useGetChannelsQuery, useGetMessagesQuery } from '../api.js';
 import getModal from './Modals/index.js';
 import { setModalInfo } from '../slices/modalsSlice.js';
 
-const renderModal = ({ modalInfo, closeModal }) => {
+const renderModal = ({ modalInfo, closeModal, channelsResponsData }) => {
   if (!modalInfo.type) {
     return null;
   }
 
   const Component = getModal(modalInfo.type);
-  return <Component closeModal={closeModal} />;
+  return <Component closeModal={closeModal} channels={channelsResponsData} />;
 };
 
 const ChatPage = () => {
@@ -33,46 +31,35 @@ const ChatPage = () => {
   const closeModal = () => dispatch(setModalInfo({ type: null }));
 
   const {
-    isSuccess: channelsResponseIsSuccess,
     data: channelsResponsData,
     isError: channelsResponseIsError,
     isLoading: channelsResponseIsLoading,
   } = useGetChannelsQuery();
 
   useEffect(() => {
-    if (channelsResponseIsSuccess) {
-      console.log(channelsResponsData);
-      // dispatch(setChannels(channelsResponsData));
-      dispatch(setActiveChannel(channelsResponsData[0].id));
-    } else if (channelsResponseIsError) {
+    if (channelsResponseIsError) {
       toast.error(t('chatPage.getChannelsError'));
     }
   }, [
     channelsResponsData,
     channelsResponseIsError,
-    channelsResponseIsSuccess,
     dispatch,
     t,
   ]);
 
   const {
-    isSuccess: messagesResponseIsSuccess,
     data: messagesResponseData,
     isError: messagesResponseIsError,
     isLoading: messagesResponseIsLoading,
   } = useGetMessagesQuery();
 
   useEffect(() => {
-    if (messagesResponseIsSuccess) {
-      console.log(messagesResponseData);
-      // dispatch(setMessages(messagesResponseData));
-    } else if (messagesResponseIsError) {
+    if (messagesResponseIsError) {
       toast.error(t('chatPage.getMessagesError'));
     }
   }, [
     messagesResponseData,
     messagesResponseIsError,
-    messagesResponseIsSuccess,
     dispatch,
     t,
   ]);
@@ -94,7 +81,7 @@ const ChatPage = () => {
               messages={messagesResponseData}
               channels={channelsResponsData}
             />
-            {renderModal({ modalInfo, closeModal })}
+            {renderModal({ modalInfo, closeModal, channelsResponsData })}
           </>
         )}
       </div>

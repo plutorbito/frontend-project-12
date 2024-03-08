@@ -2,14 +2,10 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import {
-  addNewChannel,
-  renameChannel,
-  removeChannel,
-} from '../slices/channelsSlice.js';
 import RemovableChannelButton from './ChannelsButtons/RemovableChannelButton.jsx';
 import UnremovableChannelButton from './ChannelsButtons/UnremovableChannelButton.jsx';
 import useSocket from '../hooks/useSocket.jsx';
+import { backendApi } from '../api.js';
 
 const ChannelsBox = ({ openModal, channels }) => {
   const { activeChannelId } = useSelector((state) => state.channelsReducer);
@@ -22,24 +18,72 @@ const ChannelsBox = ({ openModal, channels }) => {
   const socket = useSocket();
 
   useEffect(() => {
-    socket.on('newChannel', (payload) => {
-      console.log('newChannel payload', payload);
-      dispatch(addNewChannel(payload));
+    const handleNewChannel = (payload) => {
+      dispatch(
+        backendApi.util.updateQueryData(
+          'getChannels',
+          undefined,
+          (draftChannels) => {
+            draftChannels.push(payload);
+          },
+        ),
+      );
       console.log('socket new channel', payload);
-    });
-    socket.on('renameChannel', (payload) => {
-      dispatch(renameChannel(payload));
+    };
+
+    const handleRenameChannel = (payload) => {
+      dispatch(
+        backendApi.util.updateQueryData(
+          'getChannels',
+          undefined,
+          (draftChannels) => {
+            const { name, id } = payload;
+            const newChannels = draftChannels.map((channel) => (
+              channel.id === id ? { ...channel, name } : channel));
+            return newChannels;
+          },
+        ),
+      );
       console.log('socket rename channel', payload);
-    });
-    socket.on('removeChannel', (payload) => {
-      dispatch(removeChannel(payload.id));
+    };
+
+    const handleRemoveChannel = (payload) => {
+      dispatch(
+        backendApi.util.updateQueryData(
+          'getChannels',
+          undefined,
+          (draftChannels) => {
+            const { id } = payload;
+            const newChannels = draftChannels.filter(
+              (channel) => channel.id !== id,
+            );
+            return newChannels;
+          },
+        ),
+      );
+      dispatch(
+        backendApi.util.updateQueryData(
+          'getMessages',
+          undefined,
+          (draftMessages) => {
+            const { id } = payload;
+            const newMessages = draftMessages.filter(
+              (message) => message.channelId !== id,
+            );
+            return newMessages;
+          },
+        ),
+      );
       console.log('socket remove channel', payload);
-      console.log(activeChannelId);
-    });
+    };
+
+    socket.on('newChannel', handleNewChannel);
+    socket.on('renameChannel', handleRenameChannel);
+    socket.on('removeChannel', handleRemoveChannel);
     return () => {
-      socket.off('newChannel');
-      socket.off('renameChannel');
-      socket.off('removeChannel');
+      socket.off('newChannel', handleNewChannel);
+      socket.off('renameChannel', handleRenameChannel);
+      socket.off('removeChannel', handleRemoveChannel);
     };
   }, [activeChannelId, channels, dispatch, socket]);
 

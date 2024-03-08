@@ -1,14 +1,12 @@
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import NewMessageForm from './NewMessageForm';
-import getActiveChannelName from '../utils/getActiveChannelName';
+import { getActiveChannelName } from '../utils/getChannelsData';
 
 const MessagesBox = ({ messages, channels }) => {
   const { activeChannelId } = useSelector(
     (state) => state.channelsReducer,
   );
-
-  // const { messages } = useSelector((state) => state.messagesReducer);
 
   const { t } = useTranslation();
 

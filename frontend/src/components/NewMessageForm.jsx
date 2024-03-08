@@ -4,7 +4,6 @@ import { Button, Form, InputGroup } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-// import { addNewMessage } from '../slices/messagesSlice.js';
 import { useSendMessageMutation, backendApi } from '../api.js';
 import handleResponseError from '../utils/handleResponseErrors.js';
 import checkBadWords from '../utils/checkBadWords.js';
@@ -21,23 +20,25 @@ const NewMessageForm = () => {
 
   const { username } = useAuth();
 
-  // const user = JSON.parse(localStorage.getItem('userId')).username;
-
   const socket = useSocket();
 
   useEffect(() => {
-    socket.on('newMessage', (payload) => {
-      backendApi.util.updateQueryData(
-        'getMessages',
-        undefined,
-        (draftMassages) => {
-          draftMassages.push(payload);
-        },
+    const handleNewMessage = (payload) => {
+      dispatch(
+        backendApi.util.updateQueryData(
+          'getMessages',
+          undefined,
+          (draftMassages) => {
+            draftMassages.push(payload);
+          },
+        ),
       );
       console.log('socket new message', payload);
-    });
+    };
+
+    socket.on('newMessage', handleNewMessage);
     return () => {
-      socket.off('newMessage');
+      socket.off('newMessage', handleNewMessage);
     };
   }, [dispatch, socket]);
 

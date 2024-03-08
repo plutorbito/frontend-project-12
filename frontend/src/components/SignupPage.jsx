@@ -53,7 +53,6 @@ const SignupPage = () => {
       } catch (err) {
         console.log(err);
         setError(t(handleResponseError(err)));
-        // handleResponseError(err, setError, t);
       }
     },
   });

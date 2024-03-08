@@ -4,12 +4,12 @@ import { useSelector } from 'react-redux';
 import { Button, Form, Modal } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
-import getActiveChannelName from '../../utils/getActiveChannelName.js';
+import { getActiveChannelName, getChannelNamesArray } from '../../utils/getChannelsData.js';
 import { validateChannel } from '../../utils/validate.js';
 import { useRenameChannelsMutation } from '../../api.js';
 import checkBadWords from '../../utils/checkBadWords.js';
 
-const RenameChannelModal = ({ closeModal }) => {
+const RenameChannelModal = ({ closeModal, channels }) => {
   const inputRef = useRef(null);
 
   useEffect(() => {
@@ -17,9 +17,7 @@ const RenameChannelModal = ({ closeModal }) => {
     inputRef.current.select();
   }, []);
 
-  const { channels, activeChannelId } = useSelector(
-    (state) => state.channelsReducer,
-  );
+  const { activeChannelId } = useSelector((state) => state.channelsReducer);
   console.log('channels in rename channel', channels, activeChannelId);
 
   const currentChannelName = getActiveChannelName(channels, activeChannelId);
@@ -33,7 +31,7 @@ const RenameChannelModal = ({ closeModal }) => {
     closeModal();
   };
 
-  const channelNamesArray = channels.map((channel) => channel.name);
+  const channelNamesArray = getChannelNamesArray(channels);
 
   const formik = useFormik({
     initialValues: {

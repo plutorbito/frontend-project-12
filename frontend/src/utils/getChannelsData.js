@@ -5,4 +5,6 @@ const getActiveChannelName = (channels, activeChannelId) => {
   return activeChannel ? activeChannel.name : null;
 };
 
-export default getActiveChannelName;
+const getChannelNamesArray = (channels) => channels.map((channel) => channel.name);
+
+export { getActiveChannelName, getChannelNamesArray };

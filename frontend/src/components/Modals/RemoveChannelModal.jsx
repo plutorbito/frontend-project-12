@@ -5,9 +5,9 @@ import { toast } from 'react-toastify';
 import { useRemoveChannelsMutation } from '../../api.js';
 import { setActiveChannel } from '../../slices/channelsSlice.js';
 
-const RemoveChannelModal = ({ closeModal }) => {
+const RemoveChannelModal = ({ closeModal, channels }) => {
   const { activeChannelId } = useSelector((state) => state.channelsReducer);
-  const { channels } = useSelector((state) => state.channelsReducer);
+
   const dispatch = useDispatch();
 
   const [removeChannels] = useRemoveChannelsMutation();
