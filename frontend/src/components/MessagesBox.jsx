@@ -10,14 +10,9 @@ const MessagesBox = ({ messages, channels }) => {
 
   const { t } = useTranslation();
 
-  console.log('channels in messagebox', channels, activeChannelId);
-  console.log('messages in messagebox', messages);
-
   const messagesToRender = messages.filter(
     (message) => message.channelId === activeChannelId,
   );
-
-  console.log('messages to render', messagesToRender);
 
   return (
     <div className="col p-0 h-100">

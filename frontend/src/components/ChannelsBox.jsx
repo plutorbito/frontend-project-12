@@ -10,7 +10,6 @@ import { setActiveChannel } from '../slices/channelsSlice.js';
 
 const ChannelsBox = ({ openModal, channels }) => {
   const { activeChannelId } = useSelector((state) => state.channelsReducer);
-  console.log('channels in channelbox', channels, activeChannelId);
 
   const dispatch = useDispatch();
 
@@ -29,7 +28,6 @@ const ChannelsBox = ({ openModal, channels }) => {
           },
         ),
       );
-      console.log('socket new channel', payload);
     };
 
     const handleRenameChannel = (payload) => {
@@ -45,7 +43,6 @@ const ChannelsBox = ({ openModal, channels }) => {
           },
         ),
       );
-      console.log('socket rename channel', payload);
     };
 
     const handleRemoveChannel = (payload) => {
@@ -80,7 +77,6 @@ const ChannelsBox = ({ openModal, channels }) => {
           },
         ),
       );
-      console.log('socket remove channel', payload);
     };
 
     socket.on('newChannel', handleNewChannel);

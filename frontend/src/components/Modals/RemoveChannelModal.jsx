@@ -15,9 +15,8 @@ const RemoveChannelModal = ({ closeModal, channels }) => {
   const { t } = useTranslation();
 
   const handleDeleteChannel = async () => {
-    const response = await removeChannels(activeChannelId);
+    await removeChannels(activeChannelId);
     dispatch(setActiveChannel(channels[0].id));
-    console.log('submitted channel remove response', response);
     closeModal();
     toast.success(t('channelModals.channelReamoved'));
   };

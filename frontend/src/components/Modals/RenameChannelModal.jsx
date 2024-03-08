@@ -18,10 +18,8 @@ const RenameChannelModal = ({ closeModal, channels }) => {
   }, []);
 
   const { activeChannelId } = useSelector((state) => state.channelsReducer);
-  console.log('channels in rename channel', channels, activeChannelId);
 
   const currentChannelName = getActiveChannelName(channels, activeChannelId);
-  console.log('currentChannelName', currentChannelName);
 
   const [renameChannels] = useRenameChannelsMutation();
 
@@ -44,10 +42,8 @@ const RenameChannelModal = ({ closeModal, channels }) => {
         id: activeChannelId,
         newName: checkBadWords(name),
       };
-      console.log(filteredChannel);
 
-      const response = await renameChannels(filteredChannel);
-      console.log('submitted channel rename response', response);
+      await renameChannels(filteredChannel);
 
       toast.success(t('channelModals.channelRenamed'));
       handleClose();

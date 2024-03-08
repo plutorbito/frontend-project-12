@@ -5,7 +5,6 @@ import useAuth from '../hooks/useAuth';
 
 const NavbarElement = () => {
   const { t } = useTranslation();
-  console.log(useAuth());
   const { loggedIn, logOut, username } = useAuth();
   return (
     <Navbar bg="white" expand="lg" className="shadow-sm">

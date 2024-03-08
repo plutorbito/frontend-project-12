@@ -33,7 +33,6 @@ const NewMessageForm = () => {
           },
         ),
       );
-      console.log('socket new message', payload);
     };
 
     socket.on('newMessage', handleNewMessage);
@@ -57,7 +56,6 @@ const NewMessageForm = () => {
           user: username,
         };
         const response = await sendMessage(filteredMessage);
-        console.log('submitted message response', response);
 
         if (response.error) {
           throw response.error;
@@ -67,7 +65,6 @@ const NewMessageForm = () => {
           formik.resetForm();
         }
       } catch (err) {
-        console.log(err);
         setError(t(handleResponseError(err)));
       }
       inputRef.current.focus();

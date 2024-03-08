@@ -39,10 +39,7 @@ const NewChannelModal = ({ closeModal, channels }) => {
       const filteredChannel = { name: checkBadWords(name) };
 
       const response = await addChannels(filteredChannel);
-      console.log('response in newChannelModal', response);
       dispatch(setActiveChannel(response.data.id));
-
-      console.log('submitted channel response', response);
 
       toast.success(t('channelModals.channelAdded'));
 
