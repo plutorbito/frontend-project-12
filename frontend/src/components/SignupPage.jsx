@@ -33,26 +33,18 @@ const SignupPage = () => {
     validationSchema: validateSignupForm(t),
     validateOnChange: false,
     onSubmit: async (values) => {
-      try {
-        console.log(values);
-        const response = await sendNewUserData(values);
-        console.log('signup response', response);
-
-        if (response.error) {
-          throw response.error;
-        } else {
-          logIn();
-          setError('');
-          const userId = {
-            token: response.data.token,
-            username: response.data.username,
-          };
-          localStorage.setItem('userId', JSON.stringify(userId));
-          navigate(location.state?.from || '/');
-        }
-      } catch (err) {
-        console.log(err);
-        setError(t(handleResponseError(err)));
+      const response = await sendNewUserData(values);
+      if (response.error) {
+        setError(t(handleResponseError(response.error)));
+      } else {
+        setError('');
+        const userId = {
+          token: response.data.token,
+          username: response.data.username,
+        };
+        localStorage.setItem('userId', JSON.stringify(userId));
+        logIn(userId.username);
+        navigate(location.state?.from || '/');
       }
     },
   });

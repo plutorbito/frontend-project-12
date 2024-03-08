@@ -24,25 +24,18 @@ const LoginPage = () => {
       password: '',
     },
     onSubmit: async (values) => {
-      try {
-        const response = await sendLoginData(values);
-        console.log('login response', response);
-
-        if (response.error) {
-          throw response.error;
-        } else {
-          setError('');
-          const userId = {
-            token: response.data.token,
-            username: response.data.username,
-          };
-          localStorage.setItem('userId', JSON.stringify(userId));
-          logIn(userId.username);
-          navigate(location.state?.from || '/');
-        }
-      } catch (err) {
-        console.log(err);
-        setError(t(handleResponseError(err)));
+      const response = await sendLoginData(values);
+      if (response.error) {
+        setError(t(handleResponseError(response.error)));
+      } else {
+        setError('');
+        const userId = {
+          token: response.data.token,
+          username: response.data.username,
+        };
+        localStorage.setItem('userId', JSON.stringify(userId));
+        logIn(userId.username);
+        navigate(location.state?.from || '/');
       }
     },
   });

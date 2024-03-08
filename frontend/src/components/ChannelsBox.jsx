@@ -6,9 +6,10 @@ import RemovableChannelButton from './ChannelsButtons/RemovableChannelButton.jsx
 import UnremovableChannelButton from './ChannelsButtons/UnremovableChannelButton.jsx';
 import useSocket from '../hooks/useSocket.jsx';
 import { backendApi } from '../api.js';
+import { setActiveChannel } from '../slices/channelsSlice.js';
 
 const ChannelsBox = ({ openModal, channels }) => {
-  const { activeChannelId } = useSelector((state) => state.channelsReducer);
+  const { activeChannelId, defaultChannelId } = useSelector((state) => state.channelsReducer);
   console.log('channels in channelbox', channels, activeChannelId);
 
   const dispatch = useDispatch();
@@ -57,6 +58,11 @@ const ChannelsBox = ({ openModal, channels }) => {
             const newChannels = draftChannels.filter(
               (channel) => channel.id !== id,
             );
+
+            if (activeChannelId === id) {
+              dispatch(setActiveChannel(defaultChannelId));
+            }
+
             return newChannels;
           },
         ),
@@ -85,7 +91,7 @@ const ChannelsBox = ({ openModal, channels }) => {
       socket.off('renameChannel', handleRenameChannel);
       socket.off('removeChannel', handleRemoveChannel);
     };
-  }, [activeChannelId, channels, dispatch, socket]);
+  }, [activeChannelId, channels, defaultChannelId, dispatch, socket]);
 
   return (
     <div className="col-4 col-md-2 border-end px-0 bg-light flex-column h-100 d-flex">

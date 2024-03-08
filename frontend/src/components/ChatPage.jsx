@@ -8,6 +8,7 @@ import MessagesBox from './MessagesBox.jsx';
 import { useGetChannelsQuery, useGetMessagesQuery } from '../api.js';
 import getModal from './Modals/index.js';
 import { setModalInfo } from '../slices/modalsSlice.js';
+import { setActiveChannel } from '../slices/channelsSlice.js';
 
 const renderModal = ({ modalInfo, closeModal, channelsResponsData }) => {
   if (!modalInfo.type) {
@@ -30,22 +31,28 @@ const ChatPage = () => {
 
   const closeModal = () => dispatch(setModalInfo({ type: null }));
 
+  const { defaultChannelId } = useSelector((state) => state.channelsReducer);
+
   const {
+    isSuccess: channelsResponseIsSuccess,
     data: channelsResponsData,
     isError: channelsResponseIsError,
     isLoading: channelsResponseIsLoading,
   } = useGetChannelsQuery();
 
   useEffect(() => {
-    if (channelsResponseIsError) {
+    if (channelsResponseIsSuccess) {
+      dispatch(setActiveChannel(defaultChannelId));
+    } else if (channelsResponseIsError) {
       toast.error(t('chatPage.getChannelsError'));
     }
   }, [
     channelsResponsData,
     channelsResponseIsError,
+    channelsResponseIsSuccess,
+    defaultChannelId,
     dispatch,
-    t,
-  ]);
+    t]);
 
   const {
     data: messagesResponseData,
