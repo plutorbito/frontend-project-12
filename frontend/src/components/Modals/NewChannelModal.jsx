@@ -40,7 +40,6 @@ const NewChannelModal = ({ closeModal, channels }) => {
       const filteredChannel = { name: checkBadWords(name) };
 
       const response = await addChannels(filteredChannel);
-      console.log(response);
 
       if (response.error) {
         toast.error(t(handleResponseError(response.error)));
