@@ -10,6 +10,7 @@ import { setActiveChannel } from '../slices/channelsSlice.js';
 
 const ChannelsBox = ({ openModal, channels }) => {
   const { activeChannelId } = useSelector((state) => state.channelsReducer);
+  const defaultChannelId = '1';
 
   const dispatch = useDispatch();
 
@@ -57,7 +58,7 @@ const ChannelsBox = ({ openModal, channels }) => {
             );
 
             if (activeChannelId === id) {
-              dispatch(setActiveChannel('1'));
+              dispatch(setActiveChannel(defaultChannelId));
             }
 
             return newChannels;

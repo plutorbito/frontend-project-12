@@ -29,8 +29,6 @@ const ChatPage = () => {
 
   const closeModal = () => dispatch(setModalInfo({ type: null }));
 
-  const { defaultChannelId } = useSelector((state) => state.channelsReducer);
-
   const {
     data: channelsResponsData,
     isError: channelsResponseIsError,
@@ -44,8 +42,6 @@ const ChatPage = () => {
   }, [
     channelsResponsData,
     channelsResponseIsError,
-    defaultChannelId,
-    dispatch,
     t]);
 
   const {
@@ -61,7 +57,6 @@ const ChatPage = () => {
   }, [
     messagesResponseData,
     messagesResponseIsError,
-    dispatch,
     t,
   ]);
 

@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { useRemoveChannelsMutation } from '../../api.js';
 import { setActiveChannel } from '../../slices/channelsSlice.js';
+import handleResponseError from '../../utils/handleResponseErrors.js';
 
 const RemoveChannelModal = ({ closeModal, channels }) => {
   const { activeChannelId } = useSelector((state) => state.channelsReducer);
@@ -15,10 +16,15 @@ const RemoveChannelModal = ({ closeModal, channels }) => {
   const { t } = useTranslation();
 
   const handleDeleteChannel = async () => {
-    await removeChannels(activeChannelId);
-    dispatch(setActiveChannel(channels[0].id));
-    closeModal();
-    toast.success(t('channelModals.channelReamoved'));
+    const response = await removeChannels(activeChannelId);
+
+    if (response.error) {
+      toast.error(t(handleResponseError(response.error)));
+    } else {
+      dispatch(setActiveChannel(channels[0].id));
+      closeModal();
+      toast.success(t('channelModals.channelReamoved'));
+    }
   };
 
   return (

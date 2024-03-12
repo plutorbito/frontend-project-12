@@ -9,6 +9,7 @@ import { useAddChannelsMutation } from '../../api.js';
 import checkBadWords from '../../utils/checkBadWords.js';
 import { setActiveChannel } from '../../slices/channelsSlice.js';
 import { getChannelNamesArray } from '../../utils/getChannelsData.js';
+import handleResponseError from '../../utils/handleResponseErrors.js';
 
 const NewChannelModal = ({ closeModal, channels }) => {
   const dispatch = useDispatch();
@@ -39,13 +40,16 @@ const NewChannelModal = ({ closeModal, channels }) => {
       const filteredChannel = { name: checkBadWords(name) };
 
       const response = await addChannels(filteredChannel);
-      dispatch(setActiveChannel(response.data.id));
+      console.log(response);
 
-      toast.success(t('channelModals.channelAdded'));
-
-      handleClose();
-      formik.resetForm();
-      inputRef.current.focus();
+      if (response.error) {
+        toast.error(t(handleResponseError(response.error)));
+      } else {
+        dispatch(setActiveChannel(response.data.id));
+        toast.success(t('channelModals.channelAdded'));
+        handleClose();
+        formik.resetForm();
+      }
     },
   });
 

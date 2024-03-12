@@ -68,7 +68,6 @@ const resources = {
         messageCount_one: 'сообщение',
         messageCount_few: 'сообщения',
         messageCount_many: 'сообщений',
-        messageSent: 'Сообщение отправлено',
       },
       errors: {
         network: 'Ошибка соединения',

@@ -68,6 +68,7 @@ const LoginPage = () => {
                     onChange={formik.handleChange}
                     value={formik.values.username}
                     isInvalid={error}
+                    required
                   />
                   <label htmlFor="username">{t('login.username')}</label>
                 </Form.Group>
@@ -80,6 +81,7 @@ const LoginPage = () => {
                     onChange={formik.handleChange}
                     value={formik.values.password}
                     isInvalid={error}
+                    required
                   />
                   <label htmlFor="password">{t('login.password')}</label>
                   <Form.Control.Feedback type="invalid" tooltip>

@@ -8,6 +8,7 @@ import { getActiveChannelName, getChannelNamesArray } from '../../utils/getChann
 import { validateChannel } from '../../utils/validate.js';
 import { useRenameChannelsMutation } from '../../api.js';
 import checkBadWords from '../../utils/checkBadWords.js';
+import handleResponseError from '../../utils/handleResponseErrors.js';
 
 const RenameChannelModal = ({ closeModal, channels }) => {
   const inputRef = useRef(null);
@@ -43,12 +44,15 @@ const RenameChannelModal = ({ closeModal, channels }) => {
         newName: checkBadWords(name),
       };
 
-      await renameChannels(filteredChannel);
+      const response = await renameChannels(filteredChannel);
 
-      toast.success(t('channelModals.channelRenamed'));
-      handleClose();
-      formik.resetForm();
-      inputRef.current.focus();
+      if (response.error) {
+        toast.error(t(handleResponseError(response.error)));
+      } else {
+        toast.success(t('channelModals.channelRenamed'));
+        handleClose();
+        formik.resetForm();
+      }
     },
   });
 

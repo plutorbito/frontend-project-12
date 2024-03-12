@@ -3,7 +3,6 @@ import { useFormik } from 'formik';
 import { Button, Form, InputGroup } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
 import { useSendMessageMutation, backendApi } from '../api.js';
 import handleResponseError from '../utils/handleResponseErrors.js';
 import checkBadWords from '../utils/checkBadWords.js';
@@ -49,23 +48,17 @@ const NewMessageForm = () => {
     },
 
     onSubmit: async ({ body }) => {
-      try {
-        const filteredMessage = {
-          body: checkBadWords(body),
-          channelId: activeChannelId,
-          user: username,
-        };
-        const response = await sendMessage(filteredMessage);
-
-        if (response.error) {
-          throw response.error;
-        } else {
-          setError('');
-          toast.success(t('newMessageForm.messageSent'));
-          formik.resetForm();
-        }
-      } catch (err) {
-        setError(t(handleResponseError(err)));
+      const filteredMessage = {
+        body: checkBadWords(body),
+        channelId: activeChannelId,
+        user: username,
+      };
+      const response = await sendMessage(filteredMessage);
+      if (response.error) {
+        setError(t(handleResponseError(response.error)));
+      } else {
+        setError('');
+        formik.resetForm();
       }
       inputRef.current.focus();
     },
