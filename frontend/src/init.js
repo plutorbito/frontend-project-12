@@ -2,12 +2,16 @@ import { Provider as StoreProvider } from 'react-redux';
 import React from 'react';
 import { I18nextProvider } from 'react-i18next';
 import { Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react';
+import leoProfanity from 'leo-profanity';
 import i18n from './i18n';
 import store from './slices/store';
 import AuthProvider from './providers/AuthProvider';
 import rollbarConfig from './utils/rollbarConfig';
-import { socket, SocketContext } from './contexts/SocketContext';
+import SocketProvider from './providers/SocketProvider';
 import App from './App';
+
+const ruDictionary = leoProfanity.getDictionary('ru');
+leoProfanity.add(ruDictionary);
 
 const init = () => (
   <React.StrictMode>
@@ -16,9 +20,9 @@ const init = () => (
         <AuthProvider>
           <RollbarProvider config={rollbarConfig}>
             <ErrorBoundary>
-              <SocketContext.Provider value={socket}>
+              <SocketProvider>
                 <App />
-              </SocketContext.Provider>
+              </SocketProvider>
             </ErrorBoundary>
           </RollbarProvider>
         </AuthProvider>
