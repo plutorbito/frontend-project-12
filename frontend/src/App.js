@@ -3,8 +3,8 @@ import {
   BrowserRouter,
   Routes,
   Route,
-  useLocation,
-  Navigate,
+  // useLocation,
+  // Navigate,
 } from 'react-router-dom';
 // import { Provider, ErrorBoundary } from '@rollbar/react';
 import 'react-toastify/dist/ReactToastify.css';
@@ -19,12 +19,12 @@ import SignupPage from './components/SignupPage';
 
 const ChatRoute = ({ children }) => {
   const auth = useAuth();
-  const location = useLocation();
+  // const location = useLocation();
 
   return auth.loggedIn ? (
     children
   ) : (
-    <Navigate to="/login" state={{ from: location }} />
+    document.location.assign(ROUTERS.loginPage)
   );
 };
 

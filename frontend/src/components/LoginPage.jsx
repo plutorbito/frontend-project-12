@@ -1,17 +1,17 @@
 import { useFormik } from 'formik';
 import React, { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import loginImage from '../assets/login.jpg';
 import useAuth from '../hooks/useAuth.jsx';
 import { useSendLoginDataMutation } from '../api.js';
 import handleResponseError from '../utils/handleResponseErrors.js';
+import ROUTERS from '../utils/router.js';
 
 const LoginPage = () => {
   const [error, setError] = useState('');
   const { logIn } = useAuth();
-  const location = useLocation();
   const navigate = useNavigate();
 
   const [sendLoginData] = useSendLoginDataMutation();
@@ -35,7 +35,7 @@ const LoginPage = () => {
         };
         localStorage.setItem('userId', JSON.stringify(userId));
         logIn(userId.username);
-        navigate(location.state?.from || '/');
+        navigate(ROUTERS.chatPage);
       }
     },
   });

@@ -1,18 +1,18 @@
 import { useFormik } from 'formik';
 import React, { useState, useRef, useEffect } from 'react';
 import { Button, Form } from 'react-bootstrap';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import signupImage from '../assets/signup.png';
 import useAuth from '../hooks/useAuth.jsx';
 import { validateSignupForm } from '../utils/validate.js';
 import { useSendNewUserDataMutation } from '../api.js';
 import handleResponseError from '../utils/handleResponseErrors.js';
+import ROUTERS from '../utils/router.js';
 
 const SignupPage = () => {
   const [error, setError] = useState('');
   const { logIn } = useAuth();
-  const location = useLocation();
   const navigate = useNavigate();
 
   const inputRef = useRef();
@@ -44,7 +44,7 @@ const SignupPage = () => {
         };
         localStorage.setItem('userId', JSON.stringify(userId));
         logIn(userId.username);
-        navigate(location.state?.from || '/');
+        navigate(ROUTERS.chatPage);
       }
     },
   });
